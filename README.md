@@ -6,7 +6,7 @@ https://ya-encore-un-francais.herokuapp.com/
 
 # Introduction
 
-- NodeJS script to scrape FlashScore tennis major tournaments [website](https://www.flashscore.fr/tennis/) and return players still in the tournament
+- NodeJS script to scrape FlashScore major tennis tournaments [website](https://www.flashscore.fr/tennis/) and return players still in the tournament
 
 *The app may crash sometimes due to the 30s Heroku timeout and Puppeteer waiting for FlashScore to load - a simple page reload usually fixes it*
 
@@ -26,17 +26,17 @@ https://ya-encore-un-francais.herokuapp.com/
 
 # Changelog
 
-## **1.0** - 6/2/2021
-- return only men french players
-
-## **1.0.1** - 6/3/2021
-- added women french players
-
-## **1.1** - 6/4/2021
-- added all countries
+## **2.0** - 7/7/2021
+- change website to FlashScore to add all major tournaments
 
 ## **1.1.1** - 6/7/2021
 - added doubles players
 
-## **2.0** - 7/7/2021
-- change website to FlashScore to add all major tournaments
+## **1.1** - 6/4/2021
+- added all countries
+
+## **1.0.1** - 6/3/2021
+- added women french players
+
+## **1.0** - 6/2/2021
+- return only men french players
