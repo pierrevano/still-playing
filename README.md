@@ -2,7 +2,7 @@
 
 Y'a encore un français ?
 
-https://ya-encore-un-francais.herokuapp.com/
+https://ya-encore-un-francais.herokuapp.com
 
 # Introduction
 
@@ -26,17 +26,20 @@ https://ya-encore-un-francais.herokuapp.com/
 
 # Changelog
 
+## **2.0.1** - 7/13/2021
+- add tournaments winners
+
 ## **2.0** - 7/7/2021
 - change website to FlashScore to add all major tournaments
 
 ## **1.1.1** - 6/7/2021
-- added doubles players
+- add doubles players
 
 ## **1.1** - 6/4/2021
-- added all countries
+- add all countries
 
 ## **1.0.1** - 6/3/2021
-- added women french players
+- add women french players
 
 ## **1.0** - 6/2/2021
 - return only men french players

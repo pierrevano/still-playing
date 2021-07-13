@@ -2,8 +2,10 @@ const flagsIds = {
     22: 'ARG',
     24: 'AUS',
     25: 'AUT',
+    27: 'BHS',
     31: 'BLR',
     32: 'BEL',
+    36: 'BOL',
     37: 'BIH',
     39: 'BRA',
     41: 'BUL',
@@ -15,6 +17,8 @@ const flagsIds = {
     62: 'CZE',
     63: 'DNK',
     68: 'ECU',
+    69: 'EGY',
+    70: 'SLV',
     73: 'EST',
     76: 'FIN',
     77: 'FRA',
@@ -30,9 +34,11 @@ const flagsIds = {
     106: 'KOR',
     110: 'LVA',
     116: 'LTU',
+    117: 'LUX',
     128: 'MEX',
     130: 'MDA',
     131: 'MCO',
+    133: 'MNE',
     139: 'NED',
     140: 'NZL',
     145: 'NOR',
@@ -54,7 +60,9 @@ const flagsIds = {
     200: 'USA',
     201: 'URU',
     202: 'UZB',
-    218: 'TWN'
+    205: 'VEN',
+    218: 'TWN',
+    236: 'PRI'
 };
 
 module.exports = {
