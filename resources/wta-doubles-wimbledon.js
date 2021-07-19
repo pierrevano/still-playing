@@ -148,8 +148,8 @@ const playersInfo = [{
     "playerCountryCode": "SLO"
 }, {
     "playerName": "Li A.",
-    "playerFlagId": 81,
-    "playerCountryCode": "GER"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Santamaria S.",
     "playerFlagId": 200,

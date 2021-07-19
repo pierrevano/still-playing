@@ -112,8 +112,8 @@ const playersInfo = [{
     "playerCountryCode": "CZE"
 }, {
     "playerName": "Li A.",
-    "playerFlagId": 81,
-    "playerCountryCode": "GER"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Gasparyan M.",
     "playerFlagId": 158,
@@ -123,7 +123,7 @@ const playersInfo = [{
     "playerFlagId": 77,
     "playerCountryCode": "FRA"
 }, {
-    "playerName": "Svitolina E.",
+    "playerName": "Monfils E.",
     "playerFlagId": 195,
     "playerCountryCode": "UKR"
 }, {

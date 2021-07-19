@@ -3,6 +3,6 @@
         "entryPoint": "index.js"
     },
     "urls": [
-        "http://localhost:3000"
+        "http://localhost:3000/tennis"
     ]
 }

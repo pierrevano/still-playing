@@ -216,8 +216,8 @@ const playersInfo = [{
     "playerCountryCode": "JPN"
 }, {
     "playerName": "Nam J. S.",
-    "playerFlagId": 100,
-    "playerCountryCode": "JPN"
+    "playerFlagId": 106,
+    "playerCountryCode": "KOR"
 }, {
     "playerName": "Song M-K.",
     "playerFlagId": 106,
@@ -248,8 +248,8 @@ const playersInfo = [{
     "playerCountryCode": "NZL"
 }, {
     "playerName": "Ram R.",
-    "playerFlagId": 176,
-    "playerCountryCode": "ESP"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Salisbury J.",
     "playerFlagId": 197,

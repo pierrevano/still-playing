@@ -128,8 +128,8 @@ const playersInfo = [{
     "playerCountryCode": "BRA"
 }, {
     "playerName": "Ram R.",
-    "playerFlagId": 176,
-    "playerCountryCode": "ESP"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Salisbury J.",
     "playerFlagId": 197,
@@ -232,8 +232,8 @@ const playersInfo = [{
     "playerCountryCode": "KAZ"
 }, {
     "playerName": "Doumbia S.",
-    "playerFlagId": 77,
-    "playerCountryCode": "FRA"
+    "playerFlagId": 166,
+    "playerCountryCode": "SEN"
 }, {
     "playerName": "Reboul F.",
     "playerFlagId": 77,

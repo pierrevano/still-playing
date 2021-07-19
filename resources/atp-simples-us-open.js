@@ -356,8 +356,8 @@ const playersInfo = [{
     "playerCountryCode": "ARG"
 }, {
     "playerName": "Wolf J.",
-    "playerFlagId": 24,
-    "playerCountryCode": "AUS"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Lopez F.",
     "playerFlagId": 176,

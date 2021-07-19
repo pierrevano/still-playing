@@ -48,8 +48,8 @@ const playersInfo = [{
     "playerCountryCode": "GER"
 }, {
     "playerName": "Li A.",
-    "playerFlagId": 81,
-    "playerCountryCode": "GER"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Rus A.",
     "playerFlagId": 139,
@@ -396,8 +396,8 @@ const playersInfo = [{
     "playerCountryCode": "BLR"
 }, {
     "playerName": "Haas B.",
-    "playerFlagId": 139,
-    "playerCountryCode": "NED"
+    "playerFlagId": 25,
+    "playerCountryCode": "AUT"
 }, {
     "playerName": "Vickery S.",
     "playerFlagId": 200,

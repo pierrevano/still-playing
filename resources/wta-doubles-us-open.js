@@ -112,8 +112,8 @@ const playersInfo = [{
     "playerCountryCode": "BRA"
 }, {
     "playerName": "Li A.",
-    "playerFlagId": 81,
-    "playerCountryCode": "GER"
+    "playerFlagId": 200,
+    "playerCountryCode": "USA"
 }, {
     "playerName": "Pera B.",
     "playerFlagId": 200,
