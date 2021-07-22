@@ -81,7 +81,7 @@ const getPlayersNamesAtFirst = async ($) => {
 
 // Get player info (flag id)
 const getPlayerInfo = async (playerNameAtFirst) => {
-    const flagsIdsFile = require('./resources/flags_ids.js'),
+    const flagsIdsFile = require('./resources/_flags_ids.js'),
         flagsIds = flagsIdsFile.flagsIds,
         playerName = encodeURI(playerNameAtFirst.playerName.replace('\'', ' ')),
         playerNameOriginal = playerNameAtFirst.playerName,
@@ -244,7 +244,7 @@ const getFlagsLinks = async (uniqueCountryCodes, uniqueFlagIds, countryCodeParam
     for (let index = 0; index < uniqueCountryCodes.length; index++) {
         const countryCode = uniqueCountryCodes[index],
             flagId = uniqueFlagIds[index],
-            flagsIdsCss = require('./resources/flags_ids_css.js'),
+            flagsIdsCss = require('./resources/_flags_ids_css.js'),
             svgCountryCodeLink = flagsIdsCss.flagsIdsCss[flagId];
         if (countryCode === countryCodeParam) {
             flagsLinksTitle = `<img alt="${countryCode}" title="${countryCode}" src="${svgCountryCodeLink}" style="width: 32px; height: 24px; margin: 12px 10px 0 5px; float: left">`;
@@ -383,80 +383,14 @@ const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) =
 const createIndex = async (req, res) => {
     const t0 = performance.now();
     // const base declarations
-    const fsTab = 'tableau',
-        scoreboardAvailable = [
-            'atp-simples',
-            'wta-simples',
-            'atp-doubles',
-            'wta-doubles'
-        ],
-        tournamentNameAvailable = [
-            'internationaux-de-france',
-            'open-d-australie',
-            'us-open',
-            'wimbledon'
-        ],
-        defaultScoreboard = scoreboardAvailable[0],
-        defaultTournamentName = tournamentNameAvailable[3],
-        defaultCountryCode = 'FRA',
-        wordingConfig = {
-            'scoreboard': {
-                'atp-simples': [
-                    'joueurs',
-                    'Ils',
-                    'wta-simples',
-                    'femmes',
-                    'doubles',
-                    'Le vainqueur',
-                    'est'
-                ],
-                'wta-simples': [
-                    'joueuses',
-                    'Elles',
-                    'atp-simples',
-                    'hommes',
-                    'doubles',
-                    'La vainqueure',
-                    'est'
-                ],
-                'atp-doubles': [
-                    'joueurs',
-                    'Ils',
-                    'wta-doubles',
-                    'femmes',
-                    'simples',
-                    'Les vainqueurs',
-                    'sont'
-                ],
-                'wta-doubles': [
-                    'joueuses',
-                    'Elles',
-                    'atp-doubles',
-                    'hommes',
-                    'simples',
-                    'Les vainqueures',
-                    'sont'
-                ]
-            },
-            'tournamentName': {
-                'internationaux-de-france': {
-                    'name': 'Roland Garros',
-                    'backgroundImg': 'https://user-images.githubusercontent.com/1529169/120897732-f7e5f880-c627-11eb-9815-205e19d2917d.png'
-                },
-                'open-d-australie': {
-                    'name': 'Open d\'Australie',
-                    'backgroundImg': 'https://user-images.githubusercontent.com/1529169/124283775-917fc780-db4c-11eb-9dc8-0e2581391ba2.jpg'
-                },
-                'us-open': {
-                    'name': 'US Open',
-                    'backgroundImg': 'https://user-images.githubusercontent.com/1529169/124283784-93498b00-db4c-11eb-9d32-82a8ae82c250.jpg'
-                },
-                'wimbledon': {
-                    'name': 'Wimbledon',
-                    'backgroundImg': 'https://user-images.githubusercontent.com/1529169/124280515-110b9780-db49-11eb-8908-47c999bd7729.jpg'
-                }
-            }
-        },
+    const configuration = require('./resources/_configuration.js'),
+        fsTab = configuration.configuration.fsTab,
+        scoreboardAvailable = configuration.configuration.scoreboardAvailable,
+        tournamentNameAvailable = configuration.configuration.tournamentNameAvailable,
+        defaultCountryCode = configuration.configuration.defaultCountryCode,
+        wordingConfig = configuration.configuration.wordingConfig,
+        defaultScoreboard = configuration.configuration.defaultScoreboard,
+        defaultTournamentName = configuration.configuration.defaultTournamentName,
         tournamentNameKeys = Object.keys(wordingConfig.tournamentName);
     // let base declarations
     let baseUrl = 'https://ya-encore-un-francais.herokuapp.com/tennis',
