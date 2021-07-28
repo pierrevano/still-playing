@@ -10,10 +10,11 @@ const configuration = {
         'internationaux-de-france',
         'open-d-australie',
         'us-open',
-        'wimbledon'
+        'wimbledon',
+        'jeux-olympiques'
     ],
     'defaultScoreboard': 'atp-simples',
-    'defaultTournamentName': 'wimbledon',
+    'defaultTournamentName': 'jeux-olympiques',
     'defaultCountryCode': 'FRA',
     'wordingConfig': {
         'scoreboard': {
@@ -70,6 +71,10 @@ const configuration = {
             'wimbledon': {
                 'name': 'Wimbledon',
                 'backgroundImg': 'https://user-images.githubusercontent.com/1529169/124280515-110b9780-db49-11eb-8908-47c999bd7729.jpg'
+            },
+            'jeux-olympiques': {
+                'name': 'Jeux Olympiques',
+                'backgroundImg': 'https://user-images.githubusercontent.com/1529169/127337142-91666b64-d7f4-4da1-91f2-516b3461b5a7.png'
             }
         }
     }

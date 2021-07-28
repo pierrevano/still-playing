@@ -123,7 +123,7 @@ const playersInfo = [{
     "playerFlagId": 77,
     "playerCountryCode": "FRA"
 }, {
-    "playerName": "Monfils E.",
+    "playerName": "Svitolina E.",
     "playerFlagId": 195,
     "playerCountryCode": "UKR"
 }, {

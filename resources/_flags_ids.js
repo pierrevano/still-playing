@@ -44,6 +44,8 @@ const flagsIds = {
     140: 'NZL',
     145: 'NOR',
     147: 'PAK',
+    151: 'PRY',
+    152: 'PER',
     154: 'POL',
     155: 'POR',
     157: 'ROU',

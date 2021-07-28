@@ -83,7 +83,7 @@ const getPlayersNamesAtFirst = async ($) => {
 const getPlayerInfo = async (playerNameAtFirst) => {
     const flagsIdsFile = require('./resources/_flags_ids.js'),
         flagsIds = flagsIdsFile.flagsIds,
-        playerName = encodeURI(playerNameAtFirst.playerName.replace('\'', ' ')),
+        playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, ' ')),
         playerNameOriginal = playerNameAtFirst.playerName,
         response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
         parsedResponse = JSON.parse(response.body.replace('cjs.search.jsonpCallback(', '').replace(');', '')),
@@ -193,7 +193,7 @@ const getPlayerStillIn = async ($, allPlayersNamesForCountry) => {
                 }
                 if (!$(this).text().includes('/')) {
                     allPlayersNamesStillIn.push({
-                        name: $(this).text().split('(')[0].slice(0, -1)
+                        name: $(this).text().split('(')[0].trim()
                     });
                 } else {
                     allPlayersNamesStillIn.push({
@@ -375,6 +375,7 @@ const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) =
         }
     }
     const t1 = performance.now();
+    shell.exec('js-beautify -r --type js resources/*.js');
     shell.echo(`All players imported in ${t1 - t0} milliseconds.`);
     process.exit(1);
 };

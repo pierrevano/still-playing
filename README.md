@@ -26,6 +26,9 @@ https://ya-encore-un-francais.herokuapp.com
 
 # Changelog
 
+## **2.0.2** - 7/28/2021
+- add olympics tournament
+
 ## **2.0.1** - 7/13/2021
 - add tournaments winners
 
