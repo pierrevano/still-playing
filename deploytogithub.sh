@@ -20,7 +20,7 @@ rsync -av --progress . ../ya-encore-un-francais-github --exclude .git/
 rm -f ../ya-encore-un-francais-github/.jshintrc
 rm -f ../ya-encore-un-francais-github/deploy.sh
 rm -f ../ya-encore-un-francais-github/package-lock.json
-rm -rf ../ya-encore-un-francais-github/node_modules/*
+rm -rf ../ya-encore-un-francais-github/node_modules
 
 # Change current path to ya-encore-un-francais-github
 cd ../ya-encore-un-francais-github
