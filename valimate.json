@@ -1,8 +1,0 @@
-{
-    "localAppServer": {
-        "entryPoint": "index.js"
-    },
-    "urls": [
-        "http://localhost:3000/tennis"
-    ]
-}
