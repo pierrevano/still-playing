@@ -16,8 +16,11 @@ mv ../.git ../ya-encore-un-francais-github
 # Copy files from ya-encore-un-francais to ya-encore-un-francais-github except git repo
 rsync -av --progress . ../ya-encore-un-francais-github --exclude .git/
 
-# Remove node_modules folder for github
-yes | rm -rf ../ya-encore-un-francais-github/node_modules/*
+# Remove extra files for github
+rm -f ../ya-encore-un-francais-github/.jshintrc
+rm -f ../ya-encore-un-francais-github/deploy.sh
+rm -f ../ya-encore-un-francais-github/package-lock.json
+rm -rf ../ya-encore-un-francais-github/node_modules/*
 
 # Change current path to ya-encore-un-francais-github
 cd ../ya-encore-un-francais-github
