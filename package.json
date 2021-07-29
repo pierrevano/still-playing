@@ -1,6 +1,6 @@
 {
     "name": "ya_encore_un_francais",
-    "version": "2.0.0",
+    "version": "2.0.2",
     "description": "Y'a encore un français ?",
     "main": "index.js",
     "scripts": {
@@ -15,13 +15,11 @@
         "express": "^4.17.1",
         "fs": "*",
         "got": "^11.8.2",
-        "http-delayed-response": "^0.0.4",
         "perf_hooks": "^0.0.1",
         "puppeteer": "^10.1.0",
         "puppeteer-extra": "^3.1.18",
         "puppeteer-extra-plugin-adblocker": "^2.11.11",
         "puppeteer-extra-plugin-block-resources": "^2.2.9",
-        "shelljs": "^0.8.4",
-        "valimate-notifier": "^1.0.2"
+        "shelljs": "^0.8.4"
     }
 }

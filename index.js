@@ -4,7 +4,6 @@ const express = require('express'),
     cheerio = require('cheerio'),
     fs = require('fs'),
     got = require('got'),
-    notifyValimate = require('valimate-notifier'),
     {
         performance
     } = require('perf_hooks'),
@@ -38,7 +37,10 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
         const baseUrl = 'https://www.flashscore.fr',
             sportName = 'tennis';
         const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
+        const browserFetcher = puppeteer.createBrowserFetcher();
+        const revisionInfo = await browserFetcher.download('884014');
         const browser = await puppeteer.launch({
+                executablePath: revisionInfo.executablePath,
                 headless: true,
                 args: [
                     '--no-sandbox',
@@ -451,5 +453,4 @@ app.get('/tennis', (req, res) => {
 // Launch web server
 app.listen(process.env.PORT || 3000, () => {
     console.log('server running on http://localhost:3000/', '');
-    notifyValimate(true);
 });

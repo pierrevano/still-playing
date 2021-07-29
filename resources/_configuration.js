@@ -74,7 +74,7 @@ const configuration = {
             },
             'jeux-olympiques': {
                 'name': 'Jeux Olympiques',
-                'backgroundImg': 'https://user-images.githubusercontent.com/1529169/127337142-91666b64-d7f4-4da1-91f2-516b3461b5a7.png'
+                'backgroundImg': 'https://user-images.githubusercontent.com/1529169/127460096-eaf98006-e8a1-446d-9ebb-8f574fe14ddf.jpg'
             }
         }
     }
