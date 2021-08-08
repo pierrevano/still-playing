@@ -8,8 +8,7 @@ const express = require('express'),
         performance
     } = require('perf_hooks'),
     puppeteer = require('puppeteer'),
-    puppeteerExtra = require('puppeteer-extra'),
-    shell = require('shelljs');
+    puppeteerExtra = require('puppeteer-extra');
 
 // Block ads
 puppeteerExtra.use(require('puppeteer-extra-plugin-adblocker')({
@@ -37,10 +36,7 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
         const baseUrl = 'https://www.flashscore.fr',
             sportName = 'tennis';
         const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
-        const browserFetcher = puppeteer.createBrowserFetcher();
-        const revisionInfo = await browserFetcher.download('884014');
         const browser = await puppeteer.launch({
-                executablePath: revisionInfo.executablePath,
                 headless: true,
                 args: [
                     '--no-sandbox',
@@ -48,9 +44,7 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
                 ]
             }),
             page = await browser.newPage();
-        await page.goto(URL, {
-            waitUntil: 'networkidle2'
-        });
+        await page.goto(URL);
         const content = await page.content(),
             $ = cheerio.load(content);
         browser.close();
@@ -377,8 +371,7 @@ const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) =
         }
     }
     const t1 = performance.now();
-    shell.exec('js-beautify -r --type js resources/*.js');
-    shell.echo(`All players imported in ${t1 - t0} milliseconds.`);
+    console.log(`All players imported in ${t1 - t0} milliseconds.`);
     process.exit(1);
 };
 
