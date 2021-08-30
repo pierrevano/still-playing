@@ -14,7 +14,7 @@ const configuration = {
         'jeux-olympiques'
     ],
     'defaultScoreboard': 'atp-simples',
-    'defaultTournamentName': 'jeux-olympiques',
+    'defaultTournamentName': 'us-open',
     'defaultCountryCode': 'FRA',
     'wordingConfig': {
         'scoreboard': {

@@ -123,7 +123,7 @@ const playersInfo = [{
     "playerFlagId": 77,
     "playerCountryCode": "FRA"
 }, {
-    "playerName": "Andreescu B. V.",
+    "playerName": "Andreescu B.",
     "playerFlagId": 47,
     "playerCountryCode": "CAN"
 }, {

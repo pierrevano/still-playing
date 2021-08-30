@@ -204,8 +204,8 @@ const playersInfo = [{
     "playerCountryCode": "AUS"
 }, {
     "playerName": "Smith J-P.",
-    "playerFlagId": 197,
-    "playerCountryCode": "GBR"
+    "playerFlagId": 24,
+    "playerCountryCode": "AUS"
 }, {
     "playerName": "Behar A.",
     "playerFlagId": 201,

@@ -59,6 +59,7 @@ const flagsIds = {
     181: 'SWE',
     182: 'SUI',
     190: 'TUN',
+    191: 'TUR',
     195: 'UKR',
     197: 'GBR',
     200: 'USA',

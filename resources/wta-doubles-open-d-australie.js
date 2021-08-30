@@ -375,7 +375,7 @@ const playersInfo = [{
     "playerFlagId": 182,
     "playerCountryCode": "SUI"
 }, {
-    "playerName": "Melichar N.",
+    "playerName": "Melichar-Martinez N.",
     "playerFlagId": 200,
     "playerCountryCode": "USA"
 }, {
