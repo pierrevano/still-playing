@@ -1,321 +1,336 @@
 // Define Node modules
-const express = require('express'),
-    app = express(),
-    cheerio = require('cheerio'),
-    fs = require('fs'),
-    got = require('got'),
-    {
-        performance
-    } = require('perf_hooks'),
-    puppeteer = require('puppeteer'),
-    puppeteerExtra = require('puppeteer-extra');
+const express = require("express"),
+  app = express(),
+  cheerio = require("cheerio"),
+  fs = require("fs"),
+  got = require("got"),
+  { performance } = require("perf_hooks"),
+  puppeteer = require("puppeteer"),
+  puppeteerExtra = require("puppeteer-extra");
 
 // Block ads
-puppeteerExtra.use(require('puppeteer-extra-plugin-adblocker')({
-    blockTrackers: true
-}));
+puppeteerExtra.use(
+  require("puppeteer-extra-plugin-adblocker")({
+    blockTrackers: true,
+  })
+);
 
 // Block images
-puppeteerExtra.use(require('puppeteer-extra-plugin-block-resources')({
-    blockedTypes: new Set(['image'])
-}));
+puppeteerExtra.use(
+  require("puppeteer-extra-plugin-block-resources")({
+    blockedTypes: new Set(["image"]),
+  })
+);
 
 // Return true if number is even
 function isEven(num) {
-    return (num % 2) === 0;
+  return num % 2 === 0;
 }
 
 // Return true if number is odd
 function isOdd(num) {
-    return (num % 2) === 1;
+  return num % 2 === 1;
 }
 
 // Get website body
 const getBody = async (fsTab, scoreboard, tournamentName) => {
-    try {
-        const baseUrl = 'https://www.flashscore.fr',
-            sportName = 'tennis';
-        const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
-        const browser = await puppeteer.launch({
-                headless: true,
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox'
-                ]
-            }),
-            page = await browser.newPage();
-        await page.goto(URL);
-        const content = await page.content(),
-            $ = cheerio.load(content);
-        browser.close();
-        return $;
-    } catch (error) {
-        console.log(`getBody: ${error}`);
-    }
+  try {
+    const baseUrl = "https://www.flashscore.fr",
+      sportName = "tennis";
+    const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      }),
+      page = await browser.newPage();
+    await page.goto(URL);
+    const content = await page.content(),
+      $ = cheerio.load(content);
+    browser.close();
+    return $;
+  } catch (error) {
+    console.log(`getBody: ${error}`);
+  }
 };
 
 // Get players names at first
 const getPlayersNamesAtFirst = async ($) => {
-    try {
-        let playersNames = [];
-        $('.bracket__name').filter(function() {
-            if ($(this).closest('.draw__round--first').length > 0) {
-                const playerName = $(this).text().split('/');
-                for (let index = 0; index < playerName.length; index++) {
-                    playersNames.push({
-                        playerName: playerName[index]
-                    });
-                }
-            }
-        });
-        console.log(playersNames);
-        return playersNames;
-    } catch (error) {
-        console.log(`getPlayersNamesAtFirst: ${error}`);
-    }
+  try {
+    let playersNames = [];
+    $(".bracket__name").filter(function () {
+      if ($(this).closest(".draw__round--first").length > 0) {
+        const playerName = $(this).text().split("/");
+        for (let index = 0; index < playerName.length; index++) {
+          playersNames.push({
+            playerName: playerName[index],
+          });
+        }
+      }
+    });
+    console.log(playersNames);
+    return playersNames;
+  } catch (error) {
+    console.log(`getPlayersNamesAtFirst: ${error}`);
+  }
 };
 
 // Get player info (flag id)
 const getPlayerInfo = async (playerNameAtFirst) => {
-    const flagsIdsFile = require('./resources/_flags_ids.js'),
-        flagsIds = flagsIdsFile.flagsIds,
-        playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, ' ')),
-        playerNameOriginal = playerNameAtFirst.playerName,
-        response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
-        parsedResponse = JSON.parse(response.body.replace('cjs.search.jsonpCallback(', '').replace(');', '')),
-        parsedResponseRes = parsedResponse.results,
-        filteredParsedResponse = (parsedResponseRes.filter(function(item) {
-            return item.type === 'participants';
-        })),
-        filteredParsedResponseWithName = (filteredParsedResponse.filter(function(item) {
-            const name = playerNameOriginal.split(' ')[0],
-                firstFirstNameLetter = playerNameOriginal.split(' ')[1][0];
-            if ((item.title.startsWith(`${name} `) ||
-                    item.title.startsWith(`${name}-`)) &&
-                item.title.includes(firstFirstNameLetter)) {
-                return item;
-            }
-        }));
-    try {
-        playerInfo = {
-            'playerName': playerNameOriginal,
-            'playerFlagId': filteredParsedResponseWithName[0].flag_id,
-            'playerCountryCode': flagsIds[filteredParsedResponseWithName[0].flag_id]
-        };
-        if (flagsIds[filteredParsedResponseWithName[0].flag_id] === undefined) {
-            console.log(`playerName: ${playerName}`);
-            console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
-            console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
-            process.exit(1);
-        }
-    } catch (error) {
-        console.log(`playerName: ${playerName}`);
-        console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
-        console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
-        console.log(`getPlayerInfo: ${error}`);
+  const flagsIdsFile = require("./resources/_flags_ids.js"),
+    flagsIds = flagsIdsFile.flagsIds,
+    playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, " ")),
+    playerNameOriginal = playerNameAtFirst.playerName,
+    response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
+    parsedResponse = JSON.parse(response.body.replace("cjs.search.jsonpCallback(", "").replace(");", "")),
+    parsedResponseRes = parsedResponse.results,
+    filteredParsedResponse = parsedResponseRes.filter(function (item) {
+      return item.type === "participants";
+    }),
+    filteredParsedResponseWithName = filteredParsedResponse.filter(function (item) {
+      const name = playerNameOriginal.split(" ")[0],
+        firstFirstNameLetter = playerNameOriginal.split(" ")[1][0];
+      if ((item.title.startsWith(`${name} `) || item.title.startsWith(`${name}-`)) && item.title.includes(firstFirstNameLetter)) {
+        return item;
+      }
+    });
+  try {
+    playerInfo = {
+      playerName: playerNameOriginal,
+      playerFlagId: filteredParsedResponseWithName[0].flag_id,
+      playerCountryCode: flagsIds[filteredParsedResponseWithName[0].flag_id],
+    };
+    if (flagsIds[filteredParsedResponseWithName[0].flag_id] === undefined) {
+      console.log(`playerName: ${playerName}`);
+      console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
+      console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
+      process.exit(1);
     }
-    console.log(playerInfo);
-    return playerInfo;
+  } catch (error) {
+    console.log(`playerName: ${playerName}`);
+    console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
+    console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
+    console.log(`getPlayerInfo: ${error}`);
+  }
+  console.log(playerInfo);
+  return playerInfo;
 };
 
 // Get all players countries info
 const getAllInfos = async (scoreboard, tournamentName, countryCodeParam) => {
-    const playersInfoFile = require(`./resources/${scoreboard}-${tournamentName}.js`),
-        playersInfo = playersInfoFile.playersInfo;
-    let allCountryCodes = [],
-        allFlagIds = [],
-        allPlayersNamesForCountry = [];
-    for (let index = 0; index < playersInfo.length; index++) {
-        const playerCountryCode = playersInfo[index].playerCountryCode,
-            playerFlagId = playersInfo[index].playerFlagId;
-        allCountryCodes.push(playerCountryCode);
-        allFlagIds.push(playerFlagId);
-        if (countryCodeParam === playerCountryCode) {
-            console.log(playersInfo[index]);
-            allPlayersNamesForCountry.push(playersInfo[index].playerName);
-        }
+  const playersInfoFile = require(`./resources/${scoreboard}-${tournamentName}.js`),
+    playersInfo = playersInfoFile.playersInfo;
+  let allCountryCodes = [],
+    allFlagIds = [],
+    allPlayersNamesForCountry = [];
+  for (let index = 0; index < playersInfo.length; index++) {
+    const playerCountryCode = playersInfo[index].playerCountryCode,
+      playerFlagId = playersInfo[index].playerFlagId;
+    allCountryCodes.push(playerCountryCode);
+    allFlagIds.push(playerFlagId);
+    if (countryCodeParam === playerCountryCode) {
+      console.log(playersInfo[index]);
+      allPlayersNamesForCountry.push(playersInfo[index].playerName);
     }
-    console.log(`allPlayersNamesForCountry: ${allPlayersNamesForCountry}`);
-    playersNumberAtFirst = allPlayersNamesForCountry.length;
-    console.log(`playersNumberAtFirst: ${playersNumberAtFirst}`);
-    return {
-        'allCountryCodes': allCountryCodes,
-        'allFlagIds': allFlagIds,
-        'allPlayersNamesForCountry': allPlayersNamesForCountry,
-        'playersNumberAtFirst': playersNumberAtFirst
-    };
+  }
+  console.log(`allPlayersNamesForCountry: ${allPlayersNamesForCountry}`);
+  playersNumberAtFirst = allPlayersNamesForCountry.length;
+  console.log(`playersNumberAtFirst: ${playersNumberAtFirst}`);
+  return {
+    allCountryCodes: allCountryCodes,
+    allFlagIds: allFlagIds,
+    allPlayersNamesForCountry: allPlayersNamesForCountry,
+    playersNumberAtFirst: playersNumberAtFirst,
+  };
 };
 
 // Get current draw index
 const getDrawIndex = async ($) => {
-    try {
-        let drawsFirstValue = $('.draw__round:eq(0)').find('.bracket__name').length / 2,
-            drawIndex = 0;
-        if (!Number.isInteger(drawsFirstValue)) drawsFirstValue = drawsFirstValue - 0.5;
-        const drawsNumbers = $('.draw__label').length;
-        for (let index = 0; index < drawsNumbers; index++) {
-            const playersAdvancedNumber = $('.draw__round:eq(' + index + ')').find('.bracket__name--advancing').length;
-            drawIndex = index;
-            if (playersAdvancedNumber === drawsFirstValue) {
-                if (isOdd(drawsFirstValue)) drawsFirstValue++;
-                drawsFirstValue = drawsFirstValue / 2;
-            } else {
-                break;
-            }
-        }
-        console.log(`drawIndex: ${drawIndex + 1} / ${drawsNumbers}`);
-        return drawIndex;
-    } catch (error) {
-        console.log(`getDrawIndex: ${error}`);
+  try {
+    let drawsFirstValue = $(".draw__round:eq(0)").find(".bracket__name").length / 2,
+      drawIndex = 0;
+    if (!Number.isInteger(drawsFirstValue)) drawsFirstValue = drawsFirstValue - 0.5;
+    const drawsNumbers = $(".draw__label").length;
+    for (let index = 0; index < drawsNumbers; index++) {
+      const playersAdvancedNumber = $(".draw__round:eq(" + index + ")").find(".bracket__name--advancing").length;
+      drawIndex = index;
+      if (playersAdvancedNumber === drawsFirstValue) {
+        if (isOdd(drawsFirstValue)) drawsFirstValue++;
+        drawsFirstValue = drawsFirstValue / 2;
+      } else {
+        break;
+      }
     }
+    console.log(`drawIndex: ${drawIndex + 1} / ${drawsNumbers}`);
+    return drawIndex;
+  } catch (error) {
+    console.log(`getDrawIndex: ${error}`);
+  }
 };
 
 // Get still in the tournament player info
 const getPlayerStillIn = async ($, allPlayersNamesForCountry) => {
-    try {
-        const drawIndex = await getDrawIndex($);
-        let allPlayersNamesStillIn = [],
-            playersInfo = [],
-            indexToRemove = [];
-        $('.draw__round:eq(' + drawIndex + ')')
-            .find('.bracket__participant')
-            .filter(function(index) {
-                if ($(this).find('.bracket__name').hasClass('bracket__name--advancing')) {
-                    if (isEven(index)) {
-                        indexToRemove.push(index + 1);
-                    } else if (isOdd(index)) {
-                        indexToRemove.push(index - 1);
-                    }
-                }
-                if (!$(this).text().includes('/')) {
-                    allPlayersNamesStillIn.push({
-                        name: $(this).text().split('(')[0].trim()
-                    });
-                } else {
-                    allPlayersNamesStillIn.push({
-                        name: $(this).text().split('/')[0]
-                    });
-                    allPlayersNamesStillIn.push({
-                        name: $(this).text().split('/')[1].slice(0, -4)
-                    });
-                }
-            });
-        allPlayersNamesStillIn = allPlayersNamesStillIn.filter(function(_value, index) {
-            return indexToRemove.indexOf(index) === -1;
-        });
-        for (let index = 0; index < allPlayersNamesStillIn.length; index++) {
-            const playerNameStillIn = allPlayersNamesStillIn[index].name,
-                playerStillIn = allPlayersNamesStillIn[index];
-            if (allPlayersNamesForCountry.includes(playerNameStillIn)) {
-                playersInfo.push(playerStillIn);
-            }
+  try {
+    const drawIndex = await getDrawIndex($);
+    let allPlayersNamesStillIn = [],
+      playersInfo = [],
+      indexToRemove = [];
+    $(".draw__round:eq(" + drawIndex + ")")
+      .find(".bracket__participant")
+      .filter(function (index) {
+        if ($(this).find(".bracket__name").hasClass("bracket__name--advancing")) {
+          if (isEven(index)) {
+            indexToRemove.push(index + 1);
+          } else if (isOdd(index)) {
+            indexToRemove.push(index - 1);
+          }
         }
-        console.log(playersInfo);
-        return playersInfo;
-    } catch (error) {
-        console.log(`getPlayerStillIn: ${error}`);
+        if (!$(this).text().includes("/")) {
+          allPlayersNamesStillIn.push({
+            name: $(this).text().split("(")[0].trim(),
+          });
+        } else {
+          allPlayersNamesStillIn.push({
+            name: $(this).text().split("/")[0],
+          });
+          allPlayersNamesStillIn.push({
+            name: $(this).text().split("/")[1].slice(0, -4),
+          });
+        }
+      });
+    allPlayersNamesStillIn = allPlayersNamesStillIn.filter(function (_value, index) {
+      return indexToRemove.indexOf(index) === -1;
+    });
+    for (let index = 0; index < allPlayersNamesStillIn.length; index++) {
+      const playerNameStillIn = allPlayersNamesStillIn[index].name,
+        playerStillIn = allPlayersNamesStillIn[index];
+      if (allPlayersNamesForCountry.includes(playerNameStillIn)) {
+        playersInfo.push(playerStillIn);
+      }
     }
+    console.log(playersInfo);
+    return playersInfo;
+  } catch (error) {
+    console.log(`getPlayerStillIn: ${error}`);
+  }
 };
 
 // Get still on players names
 const getStillOnNameText = async (playerStillIn) => {
-    let stillOnNameText = 'PLUS PERSONNE, RIEN, NADA, QUE TCHI !';
-    if (playerStillIn.length > 0) {
-        stillOnNameText = '';
-        for (let index = 0; index < playerStillIn.length; index++) {
-            const playerName = playerStillIn[index].name.slice(0, -1);
-            stillOnNameText += `<span>${playerName}</span>, `;
-        }
-        stillOnNameText = stillOnNameText
-            .replace(/,\s*$/, '')
-            .replace(/,(?=[^,]*$)/, ' et');
+  let stillOnNameText = "PLUS PERSONNE, RIEN, NADA, QUE TCHI !";
+  if (playerStillIn.length > 0) {
+    stillOnNameText = "";
+    for (let index = 0; index < playerStillIn.length; index++) {
+      const playerName = playerStillIn[index].name.slice(0, -1);
+      stillOnNameText += `<span>${playerName}</span>, `;
     }
-    return stillOnNameText;
+    stillOnNameText = stillOnNameText.replace(/,\s*$/, "").replace(/,(?=[^,]*$)/, " et");
+  }
+  return stillOnNameText;
 };
 
 // Get flags links
 const getFlagsLinks = async (uniqueCountryCodes, uniqueFlagIds, countryCodeParam, baseUrl, scoreboard, tournamentName) => {
-    let flagsLinks = '',
-        flagsLinksTitle = '';
-    for (let index = 0; index < uniqueCountryCodes.length; index++) {
-        const countryCode = uniqueCountryCodes[index],
-            flagId = uniqueFlagIds[index],
-            flagsIdsCss = require('./resources/_flags_ids_css.js'),
-            svgCountryCodeLink = flagsIdsCss.flagsIdsCss[flagId];
-        if (countryCode === countryCodeParam) {
-            flagsLinksTitle = `<img alt="${countryCode}" title="${countryCode}" src="${svgCountryCodeLink}" style="width: 32px; height: 24px; margin: 12px 10px 0 5px; float: left">`;
-        } else {
-            flagsLinks += `<a href="${baseUrl}?scoreboard=${scoreboard}&countryCode=${countryCode}&tournamentName=${tournamentName}" title="${countryCode}"><img alt="${countryCode}" src="${svgCountryCodeLink}" style="width: 32px; height: 24px; margin: 0 5px 10px 5px"></a>`;
-        }
+  let flagsLinks = "",
+    flagsLinksTitle = "";
+  for (let index = 0; index < uniqueCountryCodes.length; index++) {
+    const countryCode = uniqueCountryCodes[index],
+      flagId = uniqueFlagIds[index],
+      flagsIdsCss = require("./resources/_flags_ids_css.js"),
+      svgCountryCodeLink = flagsIdsCss.flagsIdsCss[flagId];
+    if (countryCode === countryCodeParam) {
+      flagsLinksTitle = `<img alt="${countryCode}" title="${countryCode}" src="${svgCountryCodeLink}" style="width: 32px; height: 24px; margin: 12px 10px 0 5px; float: left">`;
+    } else {
+      flagsLinks += `<a href="${baseUrl}?scoreboard=${scoreboard}&countryCode=${countryCode}&tournamentName=${tournamentName}" title="${countryCode}"><img alt="${countryCode}" src="${svgCountryCodeLink}" style="width: 32px; height: 24px; margin: 0 5px 10px 5px"></a>`;
     }
-    return {
-        'flagsLinksTitle': flagsLinksTitle,
-        'flagsLinks': flagsLinks
-    };
+  }
+  return {
+    flagsLinksTitle: flagsLinksTitle,
+    flagsLinks: flagsLinks,
+  };
 };
 
 // Get other tournaments
 const getOtherTournaments = async (tournamentNameKeys, tournamentName, wordingConfig, baseUrl) => {
-    let otherTournaments = '';
-    for (let index = 0; index < tournamentNameKeys.length; index++) {
-        const otherTournamentName = tournamentNameKeys[index];
-        if (tournamentName !== otherTournamentName) {
-            const otherTournamentNameFormatted = wordingConfig.tournamentName[otherTournamentName].name;
-            otherTournaments += `<a href="${baseUrl}?tournamentName=${otherTournamentName}">${otherTournamentNameFormatted}</a>, `;
-        }
+  let otherTournaments = "";
+  for (let index = 0; index < tournamentNameKeys.length; index++) {
+    const otherTournamentName = tournamentNameKeys[index];
+    if (tournamentName !== otherTournamentName) {
+      const otherTournamentNameFormatted = wordingConfig.tournamentName[otherTournamentName].name;
+      otherTournaments += `<a href="${baseUrl}?tournamentName=${otherTournamentName}">${otherTournamentNameFormatted}</a>, `;
     }
-    otherTournaments = otherTournaments
-        .replace(/,\s*$/, '')
-        .replace(/,(?=[^,]*$)/, ' et');
-    return otherTournaments;
+  }
+  otherTournaments = otherTournaments.replace(/,\s*$/, "").replace(/,(?=[^,]*$)/, " et");
+  return otherTournaments;
 };
 
 // If ended get tournament winner name
 const getTournamentWinnerName = async ($) => {
-    try {
-        const drawIndex = await getDrawIndex($),
-            drawsNumbers = $('.draw__label').length,
-            playerSpan = $('.draw__round:eq(' + drawIndex + ')').find('.bracket__name--advancing');
-        if (drawIndex + 1 === drawsNumbers && playerSpan.length > 0) {
-            const playerWinnerName = playerSpan.text();
-            console.log(`playerWinnerName: ${playerWinnerName}`);
-            return playerWinnerName;
-        }
-    } catch (error) {
-        console.log(`getTournamentWinnerName: ${error}`);
+  try {
+    const drawIndex = await getDrawIndex($),
+      drawsNumbers = $(".draw__label").length,
+      playerSpan = $(".draw__round:eq(" + drawIndex + ")").find(".bracket__name--advancing");
+    if (drawIndex + 1 === drawsNumbers && playerSpan.length > 0) {
+      const playerWinnerName = playerSpan.text();
+      console.log(`playerWinnerName: ${playerWinnerName}`);
+      return playerWinnerName;
     }
+  } catch (error) {
+    console.log(`getTournamentWinnerName: ${error}`);
+  }
 };
 
 // Get main HTML players sections with tournaments conditions
-const getPlayersSection = async (uniqueCountryCodes, countryCodeParam, playerGender, tournamentNameFormatted, tournamentWinnerName, winningSubject, winningVerb, scoreboard, tournamentName, flagsLinksTitle, pronoun, playersNumberAtFirst, stillOnNameText, otherTournaments, baseUrl, scoreboardNew, playerGenderNew, scoreboardNameNew, flagsLinks) => {
-    if (!uniqueCountryCodes.includes(countryCodeParam)) {
-        playersSection = `<h1>Il n\'y a pas de ${playerGender} à ${tournamentNameFormatted} pour ce pays !</h1>`;
-    } else if (tournamentWinnerName !== undefined) {
-        playersSection = `
-        <h1>Ce tournoi est terminé ! ${winningSubject} de la dernière édition ${winningVerb} ${tournamentWinnerName.includes('/') ? tournamentWinnerName.replace('/', ' et ') : tournamentWinnerName}</h1>
+const getPlayersSection = async (
+  uniqueCountryCodes,
+  countryCodeParam,
+  playerGender,
+  tournamentNameFormatted,
+  tournamentWinnerName,
+  winningSubject,
+  winningVerb,
+  scoreboard,
+  tournamentName,
+  flagsLinksTitle,
+  pronoun,
+  playersNumberAtFirst,
+  stillOnNameText,
+  otherTournaments,
+  baseUrl,
+  scoreboardNew,
+  playerGenderNew,
+  scoreboardNameNew,
+  flagsLinks
+) => {
+  if (!uniqueCountryCodes.includes(countryCodeParam)) {
+    playersSection = `<h1>Il n\'y a pas de ${playerGender} à ${tournamentNameFormatted} pour ce pays !</h1>`;
+  } else if (tournamentWinnerName !== undefined) {
+    playersSection = `
+        <h1>Ce tournoi est terminé ! ${winningSubject} de la dernière édition ${winningVerb} ${
+      tournamentWinnerName.includes("/") ? tournamentWinnerName.replace("/", " et ") : tournamentWinnerName
+    }</h1>
         <h3><em>Source : <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
-    } else {
-        playersSection = `
+  } else {
+    playersSection = `
         <h1>${flagsLinksTitle}${pronoun} sont encore <span id="odometer" class="odometer">${playersNumberAtFirst}</span> !</h1>
         <h2>${stillOnNameText}</h2>
         <h3><em>Source : <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
-    }
-    playersSection += `
+  }
+  playersSection += `
     <h4>Résultats des autres compétitions : ${otherTournaments}</h4>
     <h4><a href="${baseUrl}?scoreboard=${scoreboardNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Et les ${playerGenderNew} ?</a></h4>
     <h4><a href="${baseUrl}?scoreboard=atp-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Ou les hommes en ${scoreboardNameNew} ?</a><br><a href="${baseUrl}?scoreboard=wta-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Ou les femmes ?</a></h4>`;
-    if (tournamentWinnerName === undefined) {
-        playersSection += `
+  if (tournamentWinnerName === undefined) {
+    playersSection += `
         <h4>Et les autres pays ?</h4>
         <h4 id="flagsLinks">${flagsLinks}</h4>`;
-    }
-    return playersSection;
+  }
+  return playersSection;
 };
 
 // Generate HTML index
 const getIndex = async (backgroundImg, playerStillIn, playersSection) => {
-    /* beautify ignore:start */
-    const index = `
+  /* beautify ignore:start */
+  const index = `
     <!doctype html>
     <html lang="fr">
         <head>
@@ -342,108 +357,128 @@ const getIndex = async (backgroundImg, playerStillIn, playersSection) => {
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-PJG88RFDRZ"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "G-PJG88RFDRZ");</script>
         </body>
     </html>`;
-    return index;
-    /* beautify ignore:end */
+  return index;
+  /* beautify ignore:end */
 };
 
 // Get all players tournaments and write them to files for speed
 const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) => {
-    const t0 = performance.now();
-    // Get all players when tournament begins
-    for (let index = 0; index < tournamentNameAvailable.length; index++) {
-        const tournamentName = tournamentNameAvailable[index];
-        for (let index = 0; index < scoreboardAvailable.length; index++) {
-            const scoreboard = scoreboardAvailable[index];
-            // Retry maximum 3 times
-            for (let index = 0; index < 3; index++) {
-                fs.writeFileSync(`./resources/${scoreboard}-${tournamentName}.js`, 'const playersInfo = [');
-                const $ = await getBody(fsTab, scoreboard, tournamentName);
-                const playersNamesAtFirst = await getPlayersNamesAtFirst($);
-                for (let index = 0; index < playersNamesAtFirst.length; index++) {
-                    const playerNameAtFirst = playersNamesAtFirst[index],
-                        playerInfo = await getPlayerInfo(playerNameAtFirst);
-                    fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, JSON.stringify(playerInfo, null, 2), 'utf-8');
-                    if (index < playersNamesAtFirst.length - 1) fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, ',');
-                }
-                fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, ']; module.exports = {playersInfo};');
-                if (playersNamesAtFirst.length > 0) break;
-            }
+  const t0 = performance.now();
+  // Get all players when tournament begins
+  for (let index = 0; index < tournamentNameAvailable.length; index++) {
+    const tournamentName = tournamentNameAvailable[index];
+    for (let index = 0; index < scoreboardAvailable.length; index++) {
+      const scoreboard = scoreboardAvailable[index];
+      // Retry maximum 3 times
+      for (let index = 0; index < 3; index++) {
+        fs.writeFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "const playersInfo = [");
+        const $ = await getBody(fsTab, scoreboard, tournamentName);
+        const playersNamesAtFirst = await getPlayersNamesAtFirst($);
+        for (let index = 0; index < playersNamesAtFirst.length; index++) {
+          const playerNameAtFirst = playersNamesAtFirst[index],
+            playerInfo = await getPlayerInfo(playerNameAtFirst);
+          fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, JSON.stringify(playerInfo, null, 2), "utf-8");
+          if (index < playersNamesAtFirst.length - 1) fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, ",");
         }
+        fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "]; module.exports = {playersInfo};");
+        if (playersNamesAtFirst.length > 0) break;
+      }
     }
-    const t1 = performance.now();
-    console.log(`All players imported in ${t1 - t0} milliseconds.`);
-    process.exit(1);
+  }
+  const t1 = performance.now();
+  console.log(`All players imported in ${t1 - t0} milliseconds.`);
+  process.exit(1);
 };
 
 // Create HTML on root URL load
 const createIndex = async (req, res) => {
-    const t0 = performance.now();
-    // const base declarations
-    const configuration = require('./resources/_configuration.js'),
-        fsTab = configuration.configuration.fsTab,
-        scoreboardAvailable = configuration.configuration.scoreboardAvailable,
-        tournamentNameAvailable = configuration.configuration.tournamentNameAvailable,
-        defaultCountryCode = configuration.configuration.defaultCountryCode,
-        wordingConfig = configuration.configuration.wordingConfig,
-        defaultScoreboard = configuration.configuration.defaultScoreboard,
-        defaultTournamentName = configuration.configuration.defaultTournamentName,
-        tournamentNameKeys = Object.keys(wordingConfig.tournamentName);
-    // let base declarations
-    let baseUrl = 'https://ya-encore-un-francais.herokuapp.com/tennis',
-        scoreboard = req.query.scoreboard,
-        countryCodeParam = req.query.countryCode,
-        tournamentName = req.query.tournamentName;
-    if (process.argv[2] === 'test') baseUrl = 'http://localhost:3000/tennis';
-    if (scoreboard === undefined || !scoreboardAvailable.includes(scoreboard)) scoreboard = defaultScoreboard;
-    if (countryCodeParam === undefined) countryCodeParam = defaultCountryCode;
-    if (tournamentName === undefined || !tournamentNameAvailable.includes(tournamentName)) tournamentName = defaultTournamentName;
-    countryCodeParam = countryCodeParam.toUpperCase();
-    console.log(`tournamentName: ${tournamentName}`);
-    // wording variations
-    const playerGender = wordingConfig.scoreboard[scoreboard][0],
-        pronoun = wordingConfig.scoreboard[scoreboard][1],
-        scoreboardNew = wordingConfig.scoreboard[scoreboard][2],
-        playerGenderNew = wordingConfig.scoreboard[scoreboard][3],
-        scoreboardNameNew = wordingConfig.scoreboard[scoreboard][4],
-        winningSubject = wordingConfig.scoreboard[scoreboard][5],
-        winningVerb = wordingConfig.scoreboard[scoreboard][6],
-        tournamentNameFormatted = wordingConfig.tournamentName[tournamentName].name,
-        backgroundImg = wordingConfig.tournamentName[tournamentName].backgroundImg;
-    if (process.argv[2] === 'create') {
-        writeFiles(fsTab, tournamentNameAvailable, scoreboardAvailable);
-    } else {
-        const allInfos = await getAllInfos(scoreboard, tournamentName, countryCodeParam),
-            allCountryCodes = allInfos.allCountryCodes,
-            allFlagIds = allInfos.allFlagIds,
-            allPlayersNamesForCountry = allInfos.allPlayersNamesForCountry,
-            playersNumberAtFirst = allInfos.playersNumberAtFirst,
-            uniqueCountryCodes = allCountryCodes.filter((countryCode, countryCodeIndex, allCountryCodes) => allCountryCodes.indexOf(countryCode) === countryCodeIndex),
-            uniqueFlagIds = allFlagIds.filter((flagId, flagIdIndex, allFlagIds) => allFlagIds.indexOf(flagId) === flagIdIndex),
-            $ = await getBody(fsTab, scoreboard, tournamentName),
-            playerStillIn = await getPlayerStillIn($, allPlayersNamesForCountry),
-            stillOnNameText = await getStillOnNameText(playerStillIn),
-            flags = await getFlagsLinks(uniqueCountryCodes, uniqueFlagIds, countryCodeParam, baseUrl, scoreboard, tournamentName),
-            flagsLinksTitle = flags.flagsLinksTitle,
-            flagsLinks = flags.flagsLinks,
-            otherTournaments = await getOtherTournaments(tournamentNameKeys, tournamentName, wordingConfig, baseUrl),
-            tournamentWinnerName = await getTournamentWinnerName($),
-            playersSection = await getPlayersSection(uniqueCountryCodes, countryCodeParam, playerGender, tournamentNameFormatted, tournamentWinnerName, winningSubject, winningVerb, scoreboard, tournamentName, flagsLinksTitle, pronoun, playersNumberAtFirst, stillOnNameText, otherTournaments, baseUrl, scoreboardNew, playerGenderNew, scoreboardNameNew, flagsLinks),
-            index = await getIndex(backgroundImg, playerStillIn, playersSection);
-        res.send(index);
-        const t1 = performance.now();
-        console.log(`HTML rendering took ${t1 - t0} milliseconds.`);
-    }
+  const t0 = performance.now();
+  // const base declarations
+  const configuration = require("./resources/_configuration.js"),
+    fsTab = configuration.configuration.fsTab,
+    scoreboardAvailable = configuration.configuration.scoreboardAvailable,
+    tournamentNameAvailable = configuration.configuration.tournamentNameAvailable,
+    defaultCountryCode = configuration.configuration.defaultCountryCode,
+    wordingConfig = configuration.configuration.wordingConfig,
+    defaultScoreboard = configuration.configuration.defaultScoreboard,
+    defaultTournamentName = configuration.configuration.defaultTournamentName,
+    tournamentNameKeys = Object.keys(wordingConfig.tournamentName);
+  // let base declarations
+  let baseUrl = "https://ya-encore-un-francais.herokuapp.com/tennis",
+    scoreboard = req.query.scoreboard,
+    countryCodeParam = req.query.countryCode,
+    tournamentName = req.query.tournamentName;
+  if (process.argv[2] === "test") baseUrl = "http://localhost:3000/tennis";
+  if (scoreboard === undefined || !scoreboardAvailable.includes(scoreboard)) scoreboard = defaultScoreboard;
+  if (countryCodeParam === undefined) countryCodeParam = defaultCountryCode;
+  if (tournamentName === undefined || !tournamentNameAvailable.includes(tournamentName)) tournamentName = defaultTournamentName;
+  countryCodeParam = countryCodeParam.toUpperCase();
+  console.log(`tournamentName: ${tournamentName}`);
+  // wording variations
+  const playerGender = wordingConfig.scoreboard[scoreboard][0],
+    pronoun = wordingConfig.scoreboard[scoreboard][1],
+    scoreboardNew = wordingConfig.scoreboard[scoreboard][2],
+    playerGenderNew = wordingConfig.scoreboard[scoreboard][3],
+    scoreboardNameNew = wordingConfig.scoreboard[scoreboard][4],
+    winningSubject = wordingConfig.scoreboard[scoreboard][5],
+    winningVerb = wordingConfig.scoreboard[scoreboard][6],
+    tournamentNameFormatted = wordingConfig.tournamentName[tournamentName].name,
+    backgroundImg = wordingConfig.tournamentName[tournamentName].backgroundImg;
+  if (process.argv[2] === "create") {
+    writeFiles(fsTab, tournamentNameAvailable, scoreboardAvailable);
+  } else {
+    const allInfos = await getAllInfos(scoreboard, tournamentName, countryCodeParam),
+      allCountryCodes = allInfos.allCountryCodes,
+      allFlagIds = allInfos.allFlagIds,
+      allPlayersNamesForCountry = allInfos.allPlayersNamesForCountry,
+      playersNumberAtFirst = allInfos.playersNumberAtFirst,
+      uniqueCountryCodes = allCountryCodes.filter((countryCode, countryCodeIndex, allCountryCodes) => allCountryCodes.indexOf(countryCode) === countryCodeIndex),
+      uniqueFlagIds = allFlagIds.filter((flagId, flagIdIndex, allFlagIds) => allFlagIds.indexOf(flagId) === flagIdIndex),
+      $ = await getBody(fsTab, scoreboard, tournamentName),
+      playerStillIn = await getPlayerStillIn($, allPlayersNamesForCountry),
+      stillOnNameText = await getStillOnNameText(playerStillIn),
+      flags = await getFlagsLinks(uniqueCountryCodes, uniqueFlagIds, countryCodeParam, baseUrl, scoreboard, tournamentName),
+      flagsLinksTitle = flags.flagsLinksTitle,
+      flagsLinks = flags.flagsLinks,
+      otherTournaments = await getOtherTournaments(tournamentNameKeys, tournamentName, wordingConfig, baseUrl),
+      tournamentWinnerName = await getTournamentWinnerName($),
+      playersSection = await getPlayersSection(
+        uniqueCountryCodes,
+        countryCodeParam,
+        playerGender,
+        tournamentNameFormatted,
+        tournamentWinnerName,
+        winningSubject,
+        winningVerb,
+        scoreboard,
+        tournamentName,
+        flagsLinksTitle,
+        pronoun,
+        playersNumberAtFirst,
+        stillOnNameText,
+        otherTournaments,
+        baseUrl,
+        scoreboardNew,
+        playerGenderNew,
+        scoreboardNameNew,
+        flagsLinks
+      ),
+      index = await getIndex(backgroundImg, playerStillIn, playersSection);
+    res.send(index);
+    const t1 = performance.now();
+    console.log(`HTML rendering took ${t1 - t0} milliseconds.`);
+  }
 };
 
 // Launch loading page
-app.use('/', express.static(__dirname + '/site'));
+app.use("/", express.static(__dirname + "/site"));
 
 // Call HTML function
-app.get('/tennis', (req, res) => {
-    createIndex(req, res);
+app.get("/tennis", (req, res) => {
+  createIndex(req, res);
 });
 
 // Launch web server
 app.listen(process.env.PORT || 3000, () => {
-    console.log('server running on http://localhost:3000/', '');
+  console.log("server running on http://localhost:3000/", "");
 });
