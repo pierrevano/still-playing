@@ -85,7 +85,7 @@ const playersInfo = [
     playerCountryCode: "BLR",
   },
   {
-    playerName: "Kozlova Kat.",
+    playerName: "Baindl K.",
     playerFlagId: 195,
     playerCountryCode: "UKR",
   },
@@ -195,7 +195,7 @@ const playersInfo = [
     playerCountryCode: "ESP",
   },
   {
-    playerName: "Badosa G. P.",
+    playerName: "Badosa P.",
     playerFlagId: 176,
     playerCountryCode: "ESP",
   },
@@ -640,6 +640,4 @@ const playersInfo = [
     playerCountryCode: "BLR",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

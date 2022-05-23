@@ -320,6 +320,4 @@ const playersInfo = [
     playerCountryCode: "FRA",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

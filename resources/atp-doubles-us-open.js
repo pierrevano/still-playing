@@ -26,8 +26,8 @@ const playersInfo = [
   },
   {
     playerName: "Smith J-P.",
-    playerFlagId: 24,
-    playerCountryCode: "AUS",
+    playerFlagId: 197,
+    playerCountryCode: "GBR",
   },
   {
     playerName: "Berankis R.",
@@ -120,14 +120,14 @@ const playersInfo = [
     playerCountryCode: "USA",
   },
   {
-    playerName: "Bublik A.",
-    playerFlagId: 102,
-    playerCountryCode: "KAZ",
+    playerName: "Nielsen F.",
+    playerFlagId: 63,
+    playerCountryCode: "DNK",
   },
   {
-    playerName: "Vega Hernandez D.",
-    playerFlagId: 176,
-    playerCountryCode: "ESP",
+    playerName: "Pospisil V.",
+    playerFlagId: 47,
+    playerCountryCode: "CAN",
   },
   {
     playerName: "Giron M.",
@@ -170,14 +170,14 @@ const playersInfo = [
     playerCountryCode: "GBR",
   },
   {
-    playerName: "Basilashvili N.",
-    playerFlagId: 80,
-    playerCountryCode: "GEO",
+    playerName: "Kwon S.",
+    playerFlagId: 106,
+    playerCountryCode: "KOR",
   },
   {
-    playerName: "Gerasimov E.",
-    playerFlagId: 31,
-    playerCountryCode: "BLR",
+    playerName: "Sharan D.",
+    playerFlagId: 93,
+    playerCountryCode: "IND",
   },
   {
     playerName: "Millman J.",
@@ -640,6 +640,4 @@ const playersInfo = [
     playerCountryCode: "ARG",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

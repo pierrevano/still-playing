@@ -90,7 +90,7 @@ const playersInfo = [
     playerCountryCode: "AUS",
   },
   {
-    playerName: "Badosa G. P.",
+    playerName: "Badosa P.",
     playerFlagId: 176,
     playerCountryCode: "ESP",
   },
@@ -630,6 +630,4 @@ const playersInfo = [
     playerCountryCode: "FRA",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

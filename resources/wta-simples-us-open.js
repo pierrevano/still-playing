@@ -75,9 +75,9 @@ const playersInfo = [
     playerCountryCode: "GBR",
   },
   {
-    playerName: "Brady J.",
-    playerFlagId: 200,
-    playerCountryCode: "USA",
+    playerName: "Voegele S.",
+    playerFlagId: 182,
+    playerCountryCode: "SUI",
   },
   {
     playerName: "Bencic B.",
@@ -200,7 +200,7 @@ const playersInfo = [
     playerCountryCode: "CRO",
   },
   {
-    playerName: "Badosa G. P.",
+    playerName: "Badosa P.",
     playerFlagId: 176,
     playerCountryCode: "ESP",
   },
@@ -280,9 +280,9 @@ const playersInfo = [
     playerCountryCode: "GRE",
   },
   {
-    playerName: "Ostapenko J.",
-    playerFlagId: 110,
-    playerCountryCode: "LVA",
+    playerName: "Minnen G.",
+    playerFlagId: 32,
+    playerCountryCode: "BEL",
   },
   {
     playerName: "Podoroska N.",
@@ -505,9 +505,9 @@ const playersInfo = [
     playerCountryCode: "FRA",
   },
   {
-    playerName: "Konta J.",
-    playerFlagId: 197,
-    playerCountryCode: "GBR",
+    playerName: "Rakhimova K.",
+    playerFlagId: 158,
+    playerCountryCode: "RUS",
   },
   {
     playerName: "Errani S.",
@@ -640,6 +640,4 @@ const playersInfo = [
     playerCountryCode: "BLR",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

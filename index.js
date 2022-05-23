@@ -43,7 +43,7 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       }),
       page = await browser.newPage();
-    await page.goto(URL);
+    await page.goto(URL, { waitUntil: "networkidle2" });
     const content = await page.content(),
       $ = cheerio.load(content);
     browser.close();
@@ -79,10 +79,12 @@ const getPlayerInfo = async (playerNameAtFirst) => {
   const flagsIdsFile = require("./resources/_flags_ids.js"),
     flagsIds = flagsIdsFile.flagsIds,
     playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, " ")),
-    playerNameOriginal = playerNameAtFirst.playerName,
-    response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
-    parsedResponse = JSON.parse(response.body.replace("cjs.search.jsonpCallback(", "").replace(");", "")),
-    parsedResponseRes = parsedResponse.results,
+    playerNameOriginal = playerNameAtFirst.playerName;
+  console.log(`playerNameOriginal: ${playerNameOriginal}`);
+  const response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
+    parsedResponse = JSON.parse(response.body.replace("cjs.search.jsonpCallback(", "").replace(");", ""));
+  console.log(`parsedResponse: ${response.body.replace("cjs.search.jsonpCallback(", "").replace(");", "")}`);
+  const parsedResponseRes = parsedResponse.results,
     filteredParsedResponse = parsedResponseRes.filter(function (item) {
       return item.type === "participants";
     }),
@@ -93,23 +95,31 @@ const getPlayerInfo = async (playerNameAtFirst) => {
         return item;
       }
     });
-  try {
-    playerInfo = {
-      playerName: playerNameOriginal,
-      playerFlagId: filteredParsedResponseWithName[0].flag_id,
-      playerCountryCode: flagsIds[filteredParsedResponseWithName[0].flag_id],
-    };
-    if (flagsIds[filteredParsedResponseWithName[0].flag_id] === undefined) {
+  if (filteredParsedResponseWithName.length > 0) {
+    try {
+      playerInfo = {
+        playerName: playerNameOriginal,
+        playerFlagId: filteredParsedResponseWithName[0].flag_id,
+        playerCountryCode: flagsIds[filteredParsedResponseWithName[0].flag_id],
+      };
+      if (flagsIds[filteredParsedResponseWithName[0].flag_id] === undefined) {
+        console.log(`playerName: ${playerName}`);
+        console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
+        console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
+        process.exit(1);
+      }
+    } catch (error) {
       console.log(`playerName: ${playerName}`);
       console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
       console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
-      process.exit(1);
+      console.log(`getPlayerInfo: ${error}`);
     }
-  } catch (error) {
-    console.log(`playerName: ${playerName}`);
-    console.log(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`);
-    console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
-    console.log(`getPlayerInfo: ${error}`);
+  } else {
+    playerInfo = {
+      playerName: playerNameOriginal,
+      playerFlagId: undefined,
+      playerCountryCode: undefined,
+    };
   }
   console.log(playerInfo);
   return playerInfo;
@@ -341,9 +351,11 @@ const getIndex = async (backgroundImg, playerStillIn, playersSection) => {
             <style>
                 body {text-align: center; margin: 0; font-family: "Francois One"; background-color: #000; color: #FFF; background-image: url("${backgroundImg}"); background-size: cover}
                 a, a:visited, a:hover, a:active {color:#FFF}
+                h1 {font-size: 1.9em}
+                h2 {max-width: 700px}
                 h4 {margin-bottom: 0}
                 #flagsLinks {max-width: 420px}
-                .players {min-height: 100vh; align-items: center; justify-content: center; display: flex; flex-flow: column; background: rgba(0, 0, 0, 0.2); position: relative}
+                .players {padding: 20px; min-height: 100vh; align-items: center; justify-content: center; display: flex; flex-flow: column; background: rgba(0, 0, 0, 0.2); position: relative}
                 .odometer {font-size: 25px; font-family: "Francois One" !important}
                 .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
             </style>

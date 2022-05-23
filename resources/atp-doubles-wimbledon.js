@@ -256,8 +256,8 @@ const playersInfo = [
   },
   {
     playerName: "Smith J-P.",
-    playerFlagId: 24,
-    playerCountryCode: "AUS",
+    playerFlagId: 197,
+    playerCountryCode: "GBR",
   },
   {
     playerName: "Behar A.",
@@ -466,8 +466,8 @@ const playersInfo = [
   },
   {
     playerName: "Sabanov I.",
-    playerFlagId: 59,
-    playerCountryCode: "CRO",
+    playerFlagId: 167,
+    playerCountryCode: "SRB",
   },
   {
     playerName: "Granollers M.",
@@ -526,8 +526,8 @@ const playersInfo = [
   },
   {
     playerName: "Sabanov M.",
-    playerFlagId: 59,
-    playerCountryCode: "CRO",
+    playerFlagId: 167,
+    playerCountryCode: "SRB",
   },
   {
     playerName: "Bolelli S.",
@@ -640,6 +640,4 @@ const playersInfo = [
     playerCountryCode: "FRA",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

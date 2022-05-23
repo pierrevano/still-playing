@@ -485,9 +485,9 @@ const playersInfo = [
     playerCountryCode: "NOR",
   },
   {
-    playerName: "Tsonga J-W.",
-    playerFlagId: 77,
-    playerCountryCode: "FRA",
+    playerName: "Sugita Y.",
+    playerFlagId: 100,
+    playerCountryCode: "JPN",
   },
   {
     playerName: "Van De Zandschulp B.",
@@ -640,6 +640,4 @@ const playersInfo = [
     playerCountryCode: "RUS",
   },
 ];
-module.exports = {
-  playersInfo,
-};
+module.exports = { playersInfo };

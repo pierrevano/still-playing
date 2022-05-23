@@ -46,6 +46,7 @@ const flagsIds = {
   147: "PAK",
   151: "PRY",
   152: "PER",
+  153: "PHL",
   154: "POL",
   155: "POR",
   157: "ROU",
@@ -58,6 +59,7 @@ const flagsIds = {
   176: "ESP",
   181: "SWE",
   182: "SUI",
+  186: "THA",
   190: "TUN",
   191: "TUR",
   195: "UKR",
@@ -67,6 +69,7 @@ const flagsIds = {
   202: "UZB",
   205: "VEN",
   218: "TWN",
+  228: "IDN",
   236: "PRI",
 };
 module.exports = {
