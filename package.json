@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "*",
+    "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "fs": "*",
     "got": "^11.8.2",

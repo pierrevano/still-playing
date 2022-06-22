@@ -3,7 +3,7 @@ const configuration = {
   scoreboardAvailable: ["atp-simples", "wta-simples", "atp-doubles", "wta-doubles"],
   tournamentNameAvailable: ["internationaux-de-france", "open-d-australie", "us-open", "wimbledon", "jeux-olympiques"],
   defaultScoreboard: "atp-simples",
-  defaultTournamentName: "internationaux-de-france",
+  defaultTournamentName: "wimbledon",
   defaultCountryCode: "FRA",
   wordingConfig: {
     scoreboard: {

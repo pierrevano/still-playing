@@ -305,7 +305,7 @@ const playersInfo = [
     playerCountryCode: "FRA",
   },
   {
-    playerName: "Osorio Serrano M. C.",
+    playerName: "Osorio C.",
     playerFlagId: 53,
     playerCountryCode: "COL",
   },
@@ -621,8 +621,8 @@ const playersInfo = [
   },
   {
     playerName: "Dzalamidze N.",
-    playerFlagId: 158,
-    playerCountryCode: "RUS",
+    playerFlagId: 80,
+    playerCountryCode: "GEO",
   },
   {
     playerName: "Rakhimova K.",

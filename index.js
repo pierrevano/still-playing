@@ -76,6 +76,7 @@ const getPlayersNamesAtFirst = async ($) => {
 
 // Get player info (flag id)
 const getPlayerInfo = async (playerNameAtFirst) => {
+  let playerInfo;
   const flagsIdsFile = require("./resources/_flags_ids.js"),
     flagsIds = flagsIdsFile.flagsIds,
     playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, " ")),
@@ -117,8 +118,8 @@ const getPlayerInfo = async (playerNameAtFirst) => {
   } else {
     playerInfo = {
       playerName: playerNameOriginal,
-      playerFlagId: undefined,
-      playerCountryCode: undefined,
+      playerFlagId: "undefined",
+      playerCountryCode: "undefined",
     };
   }
   console.log(playerInfo);

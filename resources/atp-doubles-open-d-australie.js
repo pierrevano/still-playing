@@ -576,6 +576,8 @@ const playersInfo = [
   },
   {
     playerName: "Tu L.",
+    playerFlagId: "undefined",
+    playerCountryCode: "undefined",
   },
   {
     playerName: "Bopanna R.",

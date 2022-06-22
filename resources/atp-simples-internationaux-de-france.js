@@ -100,9 +100,9 @@ const playersInfo = [
     playerCountryCode: "RUS",
   },
   {
-    playerName: "Tabilo A.",
-    playerFlagId: 51,
-    playerCountryCode: "CHI",
+    playerName: "Giannessi A.",
+    playerFlagId: 98,
+    playerCountryCode: "ITA",
   },
   {
     playerName: "Gojo B.",

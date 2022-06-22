@@ -8,8 +8,6 @@ https://ya-encore-un-francais.herokuapp.com
 
 - NodeJS script to scrape FlashScore major tennis tournaments [website](https://www.flashscore.fr/tennis/) and return players still in the tournament
 
-*The app may crash sometimes due to the 30s Heroku timeout and Puppeteer waiting for FlashScore to load - a simple page reload usually fixes it*
-
 # Previews
 
 *Desktop FRA preview*

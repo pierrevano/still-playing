@@ -1,0 +1,7 @@
+.env
+.jshintrc
+deploytogithub.sh
+node_modules
+package-lock.json
+resources/atp*
+resources/wta*

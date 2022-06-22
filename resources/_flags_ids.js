@@ -1,4 +1,5 @@
 const flagsIds = {
+  19: "AND",
   22: "ARG",
   24: "AUS",
   25: "AUT",
@@ -14,6 +15,7 @@ const flagsIds = {
   52: "CHN",
   53: "COL",
   59: "CRO",
+  61: "CYP",
   62: "CZE",
   63: "DNK",
   68: "ECU",

@@ -500,7 +500,7 @@ const playersInfo = [
     playerCountryCode: "KAZ",
   },
   {
-    playerName: "Osorio Serrano M. C.",
+    playerName: "Osorio C.",
     playerFlagId: 53,
     playerCountryCode: "COL",
   },

@@ -270,9 +270,9 @@ const playersInfo = [
     playerCountryCode: "MEX",
   },
   {
-    playerName: "Peterson R.",
-    playerFlagId: 181,
-    playerCountryCode: "SWE",
+    playerName: "Sramkova R.",
+    playerFlagId: 171,
+    playerCountryCode: "SVK",
   },
   {
     playerName: "Kasatkina D.",
@@ -500,9 +500,9 @@ const playersInfo = [
     playerCountryCode: "RUS",
   },
   {
-    playerName: "Davis L.",
-    playerFlagId: 200,
-    playerCountryCode: "USA",
+    playerName: "Gasanova A.",
+    playerFlagId: 158,
+    playerCountryCode: "RUS",
   },
   {
     playerName: "Bouzkova M.",
@@ -620,7 +620,7 @@ const playersInfo = [
     playerCountryCode: "GER",
   },
   {
-    playerName: "Osorio Serrano M. C.",
+    playerName: "Osorio C.",
     playerFlagId: 53,
     playerCountryCode: "COL",
   },

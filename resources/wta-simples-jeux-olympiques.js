@@ -300,7 +300,7 @@ const playersInfo = [
     playerCountryCode: "USA",
   },
   {
-    playerName: "Osorio Serrano M. C.",
+    playerName: "Osorio C.",
     playerFlagId: 53,
     playerCountryCode: "COL",
   },
