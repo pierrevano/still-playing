@@ -7,16 +7,17 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Define URLs to scrape
+const tournamentName = "wimbledon";
 const URLs = [
-  "https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=atp-simples&countryCode=FRA&tournamentName=internationaux-de-france",
-  "https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=wta-simples&countryCode=FRA&tournamentName=internationaux-de-france",
+  `https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=atp-simples&countryCode=FRA&tournamentName=${tournamentName}`,
+  `https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=wta-simples&countryCode=FRA&tournamentName=${tournamentName}`,
 ];
 
 // Define words const
 const botIntro = "🤖 Beep boop";
 const nada_word = "PLUS PERSONNE, RIEN, NADA, QUE TCHI !";
-const hashtags = "#RolandGarros #RG2022";
-const hashtagsEncoded = "%23RolandGarros %23RG2022";
+const hashtags = "#Wimbledon #Wimbledon2022";
+const hashtagsEncoded = "%Wimbledon %23Wimbledon2022";
 
 const triggerTwitter = async (_req, res) => {
   const jsonBinOptions = {
@@ -28,10 +29,10 @@ const triggerTwitter = async (_req, res) => {
   fetch(`${process.env.JSONBIN_LINK}/latest`, jsonBinOptions)
     .then((response) => response.json())
     .then(async (result) => {
-      const MEN_NB = result.record.PLAYERS_NB.MEN_NB;
-      const WOMEN_NB = result.record.PLAYERS_NB.WOMEN_NB;
-      console.log(`MEN_NB: ${MEN_NB}`);
-      console.log(`WOMEN_NB: ${WOMEN_NB}`);
+      const men = result.record.players_nb.men;
+      const women = result.record.players_nb.women;
+      console.log(`men: ${men}`);
+      console.log(`women: ${women}`);
 
       let text = "";
       const browser = await puppeteer.launch({
@@ -64,12 +65,12 @@ const triggerTwitter = async (_req, res) => {
           text += `<a href="https://twitter.com/intent/tweet/?text=${player_encoded}${hashtagsEncoded}">${h2ContentArray.length} ${player_word}</a>`;
           text += "</h1>";
 
-          if (index === 0 && h2ContentArray.length < MEN_NB && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
+          if (index === 0 && h2ContentArray.length < men && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
             await zapierPOST(player);
-            await jsonBinPUT(h2ContentArray.length, WOMEN_NB);
-          } else if (index === 1 && h2ContentArray.length < WOMEN_NB && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
+            await jsonBinPUT(h2ContentArray.length, women);
+          } else if (index === 1 && h2ContentArray.length < women && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
             await zapierPOST(player);
-            await jsonBinPUT(MEN_NB, h2ContentArray.length);
+            await jsonBinPUT(men, h2ContentArray.length);
           } else {
             console.log("No need to update!");
           }
@@ -116,11 +117,11 @@ const zapierPOST = async (player_type) => {
     .catch((error) => console.log("error", error));
 };
 
-const jsonBinPUT = async (MEN_NB, WOMEN_NB) => {
-  const PLAYER_NB_NEW = JSON.stringify({
-    PLAYERS_NB: {
-      MEN_NB: MEN_NB,
-      WOMEN_NB: WOMEN_NB,
+const jsonBinPUT = async (men, women) => {
+  const players_nb_new = JSON.stringify({
+    players_nb: {
+      men: men,
+      women: women,
     },
   });
 
@@ -130,7 +131,7 @@ const jsonBinPUT = async (MEN_NB, WOMEN_NB) => {
       "X-Master-Key": process.env.X_MASTER_KEY,
       "Content-Type": "application/json",
     },
-    body: PLAYER_NB_NEW,
+    body: players_nb_new,
     redirect: "follow",
   };
 
@@ -141,7 +142,7 @@ const jsonBinPUT = async (MEN_NB, WOMEN_NB) => {
 };
 
 // Call HTML function
-app.get("/twitter", (_req, res) => {
+app.get("/", (_req, res) => {
   triggerTwitter(_req, res);
 });
 
