@@ -1,12 +1,10 @@
-# YaEncoreUnFrancais
-
-Y'a encore un français ?
+# Y'a encore un français ?
 
 https://ya-encore-un-francais.herokuapp.com
 
 # Introduction
 
-- NodeJS script to scrape FlashScore major tennis tournaments [website](https://www.flashscore.fr/tennis/) and return players still in the tournament
+- Node.js script to scrape Flashscore major tennis tournaments [website](https://www.flashscore.fr/tennis/) and return players still in the tournament
 
 # Previews
 

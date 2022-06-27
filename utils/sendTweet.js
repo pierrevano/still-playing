@@ -19,7 +19,7 @@ const nada_word = "PLUS PERSONNE, RIEN, NADA, QUE TCHI !";
 const hashtags = "#Wimbledon #Wimbledon2022";
 const hashtagsEncoded = "%Wimbledon %23Wimbledon2022";
 
-const triggerTwitter = async (_req, res) => {
+const sendTwitter = async (_req, res) => {
   const jsonBinOptions = {
     method: "GET",
     headers: { "X-Master-Key": process.env.X_MASTER_KEY },
@@ -142,8 +142,8 @@ const jsonBinPUT = async (men, women) => {
 };
 
 // Call HTML function
-app.get("/", (_req, res) => {
-  triggerTwitter(_req, res);
+app.get("/twitter", (_req, res) => {
+  sendTwitter(_req, res);
 });
 
 // Launch web server
