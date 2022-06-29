@@ -17,7 +17,7 @@ const URLs = [
 const botIntro = "🤖 Beep boop";
 const nada_word = "PLUS PERSONNE, RIEN, NADA, QUE TCHI !";
 const hashtags = "#Wimbledon #Wimbledon2022";
-const hashtagsEncoded = "%Wimbledon %23Wimbledon2022";
+const hashtagsEncoded = "%23Wimbledon %23Wimbledon2022";
 
 const sendTwitter = async (_req, res) => {
   const jsonBinOptions = {
@@ -29,10 +29,15 @@ const sendTwitter = async (_req, res) => {
   fetch(`${process.env.JSONBIN_LINK}/latest`, jsonBinOptions)
     .then((response) => response.json())
     .then(async (result) => {
-      const men = result.record.players_nb.men;
-      const women = result.record.players_nb.women;
-      console.log(`men: ${men}`);
-      console.log(`women: ${women}`);
+      const players_nb = result.record.players_nb;
+      const men = players_nb.men.number;
+      const women = players_nb.women.number;
+      const men_names = players_nb.men.players_names;
+      const women_names = players_nb.women.players_names;
+      console.log("men number:", men);
+      console.log("women number:", women);
+      console.log("men names:", men_names);
+      console.log("women names:", women_names);
 
       let text = "";
       const browser = await puppeteer.launch({
@@ -55,24 +60,26 @@ const sendTwitter = async (_req, res) => {
           const h2 = await page.$("h2");
           const h2Content = await page.evaluate((el) => el.textContent, h2);
           const h2ContentArray = h2Content.replace(" et ", ", ").split(", ");
+          const player_out = index === 0 ? men_names.filter((el) => h2ContentArray.indexOf(el) === -1) : women_names.filter((el) => h2ContentArray.indexOf(el) === -1);
 
-          const player_without_hashtags = `${botIntro}, ${h1FirstPart.toLowerCase()}encore ${h2ContentArray.length} 🇫🇷 : ${h2Content} !`;
-          console.log(player_without_hashtags);
+          const player_without_hashtags = `${botIntro}, c'est fini pour ${player_out} ❌ ! ${h1FirstPart}encore ${h2ContentArray.length} 🇫🇷 : ${h2Content} !`;
           const player = `${player_without_hashtags} ${hashtags}`;
           const player_encoded = encodeURI(`${player_without_hashtags} `);
           const player_word = index === 0 ? "men" : "women";
           text += "<h1>";
-          text += `<a href="https://twitter.com/intent/tweet/?text=${player_encoded}${hashtagsEncoded}">${h2ContentArray.length} ${player_word}</a>`;
+          text += `<a href="https://twitter.com/intent/tweet/?text=${player_encoded}${hashtagsEncoded}" target="_blank">${h2ContentArray.length} ${player_word}</a>`;
           text += "</h1>";
 
           if (index === 0 && h2ContentArray.length < men && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
             await zapierPOST(player);
-            await jsonBinPUT(h2ContentArray.length, women);
+            console.log(player);
+            await jsonBinPUT(h2ContentArray.length, women, h2ContentArray, women_names);
           } else if (index === 1 && h2ContentArray.length < women && h2ContentArray.length > 0 && !h2Content.includes(nada_word)) {
             await zapierPOST(player);
-            await jsonBinPUT(men, h2ContentArray.length);
+            console.log(player);
+            await jsonBinPUT(men, h2ContentArray.length, men_names, h2ContentArray);
           } else {
-            console.log("No need to update!");
+            console.log("No updates, so no tweet!");
           }
         }
 
@@ -117,11 +124,17 @@ const zapierPOST = async (player_type) => {
     .catch((error) => console.log("error", error));
 };
 
-const jsonBinPUT = async (men, women) => {
+const jsonBinPUT = async (men, women, men_names, women_names) => {
   const players_nb_new = JSON.stringify({
     players_nb: {
-      men: men,
-      women: women,
+      men: {
+        number: men,
+        players_names: men_names,
+      },
+      women: {
+        number: women,
+        players_names: women_names,
+      },
     },
   });
 
@@ -142,7 +155,7 @@ const jsonBinPUT = async (men, women) => {
 };
 
 // Call HTML function
-app.get("/twitter", (_req, res) => {
+app.get("/", (_req, res) => {
   sendTwitter(_req, res);
 });
 
