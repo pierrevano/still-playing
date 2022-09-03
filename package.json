@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune",
     "prettier": "prettier --write \"**/*.js*\""
   },
   "prettier": {
@@ -15,16 +14,13 @@
   "author": "Pierre Vanoverschelde",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "*",
+    "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "fs": "*",
     "got": "^11.8.2",
     "perf_hooks": "^0.0.1",
     "prettier": "^2.6.2",
-    "puppeteer": "^15.1.1",
-    "puppeteer-extra": "^3.1.18",
-    "puppeteer-extra-plugin-adblocker": "^2.11.11",
-    "puppeteer-extra-plugin-block-resources": "^2.2.9"
+    "puppeteer": "^17.1.0"
   }
 }

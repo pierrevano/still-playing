@@ -1,26 +1,12 @@
 // Define Node modules
-const express = require("express"),
-  app = express(),
-  cheerio = require("cheerio"),
-  fs = require("fs"),
-  got = require("got"),
-  { performance } = require("perf_hooks"),
-  puppeteer = require("puppeteer"),
-  puppeteerExtra = require("puppeteer-extra");
+const cheerio = require("cheerio");
+const express = require("express");
+const fs = require("fs");
+const got = require("got");
+const { performance } = require("perf_hooks");
+const puppeteer = require("puppeteer");
 
-// Block ads
-puppeteerExtra.use(
-  require("puppeteer-extra-plugin-adblocker")({
-    blockTrackers: true,
-  })
-);
-
-// Block images
-puppeteerExtra.use(
-  require("puppeteer-extra-plugin-block-resources")({
-    blockedTypes: new Set(["image"]),
-  })
-);
+const app = express();
 
 // Return true if number is even
 function isEven(num) {
@@ -39,8 +25,7 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
       sportName = "tennis";
     const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
     const browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
       }),
       page = await browser.newPage();
     await page.goto(URL, { waitUntil: "networkidle2" });
