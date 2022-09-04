@@ -1,5 +1,4 @@
 const flagsIdsCss = {
-  1: "https://ya-encore-un-francais-flags.surge.sh/world.b7d16db.png",
   100: "https://ya-encore-un-francais-flags.surge.sh/jp.85adde7.png",
   101: "https://ya-encore-un-francais-flags.surge.sh/jo.a2000fc.png",
   102: "https://ya-encore-un-francais-flags.surge.sh/kz.ff7c698.png",

@@ -119,13 +119,16 @@ const getAllInfos = async (scoreboard, tournamentName, countryCodeParam) => {
     allFlagIds = [],
     allPlayersNamesForCountry = [];
   for (let index = 0; index < playersInfo.length; index++) {
-    const playerCountryCode = playersInfo[index].playerCountryCode,
-      playerFlagId = playersInfo[index].playerFlagId;
-    allCountryCodes.push(playerCountryCode);
-    allFlagIds.push(playerFlagId);
-    if (countryCodeParam === playerCountryCode) {
-      console.log(playersInfo[index]);
-      allPlayersNamesForCountry.push(playersInfo[index].playerName);
+    const playerCountryCode = playersInfo[index].playerCountryCode;
+    if (playerCountryCode !== "undefined") {
+      const playerFlagId = playersInfo[index].playerFlagId;
+      console.log(playersInfo[index].playerCountryCode);
+      allCountryCodes.push(playerCountryCode);
+      allFlagIds.push(playerFlagId);
+      if (countryCodeParam === playerCountryCode) {
+        console.log(playersInfo[index]);
+        allPlayersNamesForCountry.push(playersInfo[index].playerName);
+      }
     }
   }
   console.log(`allPlayersNamesForCountry: ${allPlayersNamesForCountry}`);
