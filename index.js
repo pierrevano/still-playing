@@ -8,6 +8,10 @@ const puppeteer = require("puppeteer");
 
 const app = express();
 
+const config = {
+  hostname: "ya-encore-un-francais.herokuapp.com",
+};
+
 // Return true if number is even
 function isEven(num) {
   return num % 2 === 0;
@@ -66,10 +70,8 @@ const getPlayerInfo = async (playerNameAtFirst) => {
     flagsIds = flagsIdsFile.flagsIds,
     playerName = encodeURI(playerNameAtFirst.playerName.replace(/[\'-\.]/g, " ")),
     playerNameOriginal = playerNameAtFirst.playerName;
-  console.log(`playerNameOriginal: ${playerNameOriginal}`);
   const response = await got(`https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`),
     parsedResponse = JSON.parse(response.body.replace("cjs.search.jsonpCallback(", "").replace(");", ""));
-  console.log(`parsedResponse: ${response.body.replace("cjs.search.jsonpCallback(", "").replace(");", "")}`);
   const parsedResponseRes = parsedResponse.results,
     filteredParsedResponse = parsedResponseRes.filter(function (item) {
       return item.type === "participants";
@@ -122,7 +124,6 @@ const getAllInfos = async (scoreboard, tournamentName, countryCodeParam) => {
     const playerCountryCode = playersInfo[index].playerCountryCode;
     if (playerCountryCode !== "undefined") {
       const playerFlagId = playersInfo[index].playerFlagId;
-      console.log(playersInfo[index].playerCountryCode);
       allCountryCodes.push(playerCountryCode);
       allFlagIds.push(playerFlagId);
       if (countryCodeParam === playerCountryCode) {
@@ -362,6 +363,24 @@ const getIndex = async (backgroundImg, playerStillIn, playersSection) => {
   /* beautify ignore:end */
 };
 
+// Get all players function
+const writePlayersInFile = async (fsTab, scoreboard, tournamentName) => {
+  // Retry maximum 5 times
+  for (let index = 0; index < 5; index++) {
+    fs.writeFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "const playersInfo = [");
+    const $ = await getBody(fsTab, scoreboard, tournamentName);
+    const playersNamesAtFirst = await getPlayersNamesAtFirst($);
+    for (let index = 0; index < playersNamesAtFirst.length; index++) {
+      const playerNameAtFirst = playersNamesAtFirst[index],
+        playerInfo = await getPlayerInfo(playerNameAtFirst);
+      fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, JSON.stringify(playerInfo, null, 2), "utf-8");
+      if (index < playersNamesAtFirst.length - 1) fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, ",");
+    }
+    fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "]; module.exports = {playersInfo};");
+    if (playersNamesAtFirst.length > 0) break;
+  }
+};
+
 // Get all players tournaments and write them to files for speed
 const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) => {
   const t0 = performance.now();
@@ -370,19 +389,16 @@ const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) =
     const tournamentName = tournamentNameAvailable[index];
     for (let index = 0; index < scoreboardAvailable.length; index++) {
       const scoreboard = scoreboardAvailable[index];
-      // Retry maximum 3 times
-      for (let index = 0; index < 3; index++) {
-        fs.writeFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "const playersInfo = [");
-        const $ = await getBody(fsTab, scoreboard, tournamentName);
-        const playersNamesAtFirst = await getPlayersNamesAtFirst($);
-        for (let index = 0; index < playersNamesAtFirst.length; index++) {
-          const playerNameAtFirst = playersNamesAtFirst[index],
-            playerInfo = await getPlayerInfo(playerNameAtFirst);
-          fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, JSON.stringify(playerInfo, null, 2), "utf-8");
-          if (index < playersNamesAtFirst.length - 1) fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, ",");
+      console.log(`Reading ./resources/${scoreboard}-${tournamentName}.js...`);
+      try {
+        if (process.argv[2] === "create" && process.argv[3] === "new") {
+          await writePlayersInFile(fsTab, scoreboard, tournamentName);
+          console.log(`Done ✅ ./resources/${scoreboard}-${tournamentName}.js`);
+        } else {
+          require(`./resources/${scoreboard}-${tournamentName}.js`);
         }
-        fs.appendFileSync(`./resources/${scoreboard}-${tournamentName}.js`, "]; module.exports = {playersInfo};");
-        if (playersNamesAtFirst.length > 0) break;
+      } catch (error) {
+        await writePlayersInFile(fsTab, scoreboard, tournamentName);
       }
     }
   }
@@ -405,7 +421,8 @@ const createIndex = async (req, res) => {
     defaultTournamentName = configuration.configuration.defaultTournamentName,
     tournamentNameKeys = Object.keys(wordingConfig.tournamentName);
   // let base declarations
-  let baseUrl = "https://ya-encore-un-francais.herokuapp.com/tennis",
+  const hostname = config.hostname;
+  let baseUrl = `https://${hostname}/tennis`,
     scoreboard = req.query.scoreboard,
     countryCodeParam = req.query.countryCode,
     tournamentName = req.query.tournamentName;
