@@ -9,7 +9,7 @@ const puppeteer = require("puppeteer");
 const app = express();
 
 const config = {
-  hostname: "ya-encore-un-francais.herokuapp.com",
+  hostname: "ya-encore-un-francais.onrender.com",
 };
 
 // Return true if number is even
@@ -28,11 +28,12 @@ const getBody = async (fsTab, scoreboard, tournamentName) => {
     const baseUrl = "https://www.flashscore.fr",
       sportName = "tennis";
     const URL = `${baseUrl}/${sportName}/${scoreboard}/${tournamentName}/${fsTab}/`;
+    console.log(`Getting content from ${URL}`);
     const browser = await puppeteer.launch({
         args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
       }),
       page = await browser.newPage();
-    await page.goto(URL, { waitUntil: "networkidle2" });
+    await page.goto(URL, { waitUntil: "networkidle2", timeout: 0 });
     const content = await page.content(),
       $ = cheerio.load(content);
     browser.close();

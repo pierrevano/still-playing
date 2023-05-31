@@ -9,8 +9,8 @@ dotenv.config();
 // Define URLs to scrape
 const tournamentName = "wimbledon";
 const URLs = [
-  `https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=atp-simples&countryCode=FRA&tournamentName=${tournamentName}`,
-  `https://ya-encore-un-francais.herokuapp.com/tennis?scoreboard=wta-simples&countryCode=FRA&tournamentName=${tournamentName}`,
+  `https://ya-encore-un-francais.onrender.com/tennis?scoreboard=atp-simples&countryCode=FRA&tournamentName=${tournamentName}`,
+  `https://ya-encore-un-francais.onrender.com/tennis?scoreboard=wta-simples&countryCode=FRA&tournamentName=${tournamentName}`,
 ];
 
 // Define words const

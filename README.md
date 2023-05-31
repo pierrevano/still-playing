@@ -1,6 +1,6 @@
 # Y'a encore un français ?
 
-https://ya-encore-un-francais.herokuapp.com
+https://ya-encore-un-francais.onrender.com
 
 # Introduction
 
