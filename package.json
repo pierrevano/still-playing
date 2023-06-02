@@ -1,7 +1,7 @@
 {
-  "name": "ya_encore_un_francais",
+  "name": "still_playing",
   "version": "2.0.2",
-  "description": "Y'a encore un français ?",
+  "description": "Still playing?",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -15,12 +15,19 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "fs": "*",
     "got": "^11.8.2",
     "perf_hooks": "^0.0.1",
     "prettier": "^2.6.2",
     "puppeteer": "^17.1.0"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

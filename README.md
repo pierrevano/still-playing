@@ -1,6 +1,6 @@
-# Y'a encore un français ?
+# Still playing?
 
-https://ya-encore-un-francais.onrender.com
+https://still-playing.onrender.com
 
 # Introduction
 
