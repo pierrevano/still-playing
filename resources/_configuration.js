@@ -1,9 +1,13 @@
+const getDefaultTournamentName = require("../src/utils/getDefaultTournamentName");
+
+const defaultTournamentName = getDefaultTournamentName();
+
 const configuration = {
   fsTab: "tableau",
   scoreboardAvailable: ["atp-simples", "wta-simples", "atp-doubles", "wta-doubles"],
   tournamentNameAvailable: ["internationaux-de-france", "open-d-australie", "us-open", "wimbledon", "jeux-olympiques"],
   defaultScoreboard: "atp-simples",
-  defaultTournamentName: "internationaux-de-france",
+  defaultTournamentName: defaultTournamentName,
   defaultCountryCode: "FRA",
   wordingConfig: {
     scoreboard: {
