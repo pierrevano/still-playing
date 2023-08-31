@@ -211,6 +211,7 @@ const flagsIdsCss = {
   77: "https://still-playing-assets.surge.sh/fr.8e1768e.png",
   78: "https://still-playing-assets.surge.sh/ga.eeea7ba.png",
   79: "https://still-playing-assets.surge.sh/gm.a994edc.png",
+  8: "https://still-playing-assets.surge.sh/world.b7d16db.png",
   80: "https://still-playing-assets.surge.sh/ge.caaface.png",
   81: "https://still-playing-assets.surge.sh/de.ae030da.png",
   82: "https://still-playing-assets.surge.sh/gh.66c35b7.png",
