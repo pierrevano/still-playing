@@ -1,4 +1,5 @@
 const flagsIds = {
+  8: "WORLD",
   19: "AND",
   22: "ARG",
   24: "AUS",
