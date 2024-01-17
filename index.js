@@ -383,7 +383,7 @@ const writePlayersInFile = async (fsTab, scoreboard, tournamentName) => {
 };
 
 // Get all players tournaments and write them to files for speed
-const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) => {
+const writeFiles = async (fsTab, tournamentNameAvailable, defaultTournamentName, scoreboardAvailable) => {
   const t0 = performance.now();
   // Get all players when tournament begins
   for (let index = 0; index < tournamentNameAvailable.length; index++) {
@@ -393,8 +393,12 @@ const writeFiles = async (fsTab, tournamentNameAvailable, scoreboardAvailable) =
       console.log(`Reading ./resources/${scoreboard}-${tournamentName}.js...`);
       try {
         if (process.argv[2] === "create" && process.argv[3] === "new") {
-          await writePlayersInFile(fsTab, scoreboard, tournamentName);
-          console.log(`Done ✅ ./resources/${scoreboard}-${tournamentName}.js`);
+          if (tournamentName === defaultTournamentName) {
+            await writePlayersInFile(fsTab, scoreboard, tournamentName);
+            console.log(`Done ✅ ./resources/${scoreboard}-${tournamentName}.js`);
+          } else {
+            console.log(`Skipped ✅ ./resources/${scoreboard}-${tournamentName}.js`);
+          }
         } else {
           require(`./resources/${scoreboard}-${tournamentName}.js`);
         }
@@ -444,7 +448,7 @@ const createIndex = async (req, res) => {
     tournamentNameFormatted = wordingConfig.tournamentName[tournamentName].name,
     backgroundImg = wordingConfig.tournamentName[tournamentName].backgroundImg;
   if (process.argv[2] === "create") {
-    writeFiles(fsTab, tournamentNameAvailable, scoreboardAvailable);
+    writeFiles(fsTab, tournamentNameAvailable, defaultTournamentName, scoreboardAvailable);
   } else {
     const allInfos = await getAllInfos(scoreboard, tournamentName, countryCodeParam),
       allCountryCodes = allInfos.allCountryCodes,
