@@ -56,7 +56,11 @@ function getDefaultTournamentName() {
   const threeWeeksInMilliseconds = 2 * 7 * 24 * 60 * 60 * 1000;
 
   for (const tournament of tournaments) {
-    if (currentDate >= tournament.startDate && currentDate <= new Date(tournament.startDate.getTime() + threeWeeksInMilliseconds)) {
+    if (
+      currentDate >= tournament.startDate &&
+      currentDate <=
+        new Date(tournament.startDate.getTime() + threeWeeksInMilliseconds)
+    ) {
       return tournament.name;
     }
   }

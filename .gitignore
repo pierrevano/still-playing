@@ -1,3 +1,4 @@
+.env
 .jshintrc
 deploytogithub.sh
 node_modules

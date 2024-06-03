@@ -5,6 +5,11 @@ const playersInfo = [
     playerCountryCode: "POL",
   },
   {
+    playerName: "Jeanjean L.",
+    playerFlagId: 77,
+    playerCountryCode: "FRA",
+  },
+  {
     playerName: "Bronzetti L.",
     playerFlagId: 98,
     playerCountryCode: "ITA",
@@ -18,6 +23,11 @@ const playersInfo = [
     playerName: "Bouzas Maneiro J.",
     playerFlagId: 176,
     playerCountryCode: "ESP",
+  },
+  {
+    playerName: "Fett J.",
+    playerFlagId: 59,
+    playerCountryCode: "CRO",
   },
   {
     playerName: "Bouzkova M.",
@@ -55,9 +65,9 @@ const playersInfo = [
     playerCountryCode: "CHN",
   },
   {
-    playerName: "Townsend T.",
-    playerFlagId: 200,
-    playerCountryCode: "USA",
+    playerName: "Niemeier J.",
+    playerFlagId: 81,
+    playerCountryCode: "GER",
   },
   {
     playerName: "Tomova V.",
@@ -80,6 +90,11 @@ const playersInfo = [
     playerCountryCode: "USA",
   },
   {
+    playerName: "Danilovic O.",
+    playerFlagId: 167,
+    playerCountryCode: "SRB",
+  },
+  {
     playerName: "Trevisan M.",
     playerFlagId: 98,
     playerCountryCode: "ITA",
@@ -95,6 +110,11 @@ const playersInfo = [
     playerCountryCode: "UKR",
   },
   {
+    playerName: "Pigossi L.",
+    playerFlagId: 39,
+    playerCountryCode: "BRA",
+  },
+  {
     playerName: "Kostyuk M.",
     playerFlagId: 195,
     playerCountryCode: "UKR",
@@ -105,6 +125,11 @@ const playersInfo = [
     playerCountryCode: "CZE",
   },
   {
+    playerName: "Galfi D.",
+    playerFlagId: 91,
+    playerCountryCode: "HUN",
+  },
+  {
     playerName: "Paquet C.",
     playerFlagId: 77,
     playerCountryCode: "FRA",
@@ -113,6 +138,11 @@ const playersInfo = [
     playerName: "Shnaider D.",
     playerFlagId: 8,
     playerCountryCode: "WORLD",
+  },
+  {
+    playerName: "Volynets K.",
+    playerFlagId: 200,
+    playerCountryCode: "USA",
   },
   {
     playerName: "Krunic A.",
@@ -135,9 +165,19 @@ const playersInfo = [
     playerCountryCode: "USA",
   },
   {
+    playerName: "Avdeeva J.",
+    playerFlagId: 8,
+    playerCountryCode: "WORLD",
+  },
+  {
     playerName: "Van Uytvanck A.",
     playerFlagId: 32,
     playerCountryCode: "BEL",
+  },
+  {
+    playerName: "Zidansek T.",
+    playerFlagId: 172,
+    playerCountryCode: "SLO",
   },
   {
     playerName: "Wang Y.",
@@ -170,9 +210,19 @@ const playersInfo = [
     playerCountryCode: "POL",
   },
   {
+    playerName: "Sramkova R.",
+    playerFlagId: 171,
+    playerCountryCode: "SVK",
+  },
+  {
     playerName: "Anisimova A.",
     playerFlagId: 200,
     playerCountryCode: "USA",
+  },
+  {
+    playerName: "Starodubtseva Y.",
+    playerFlagId: 195,
+    playerCountryCode: "UKR",
   },
   {
     playerName: "Bucsa C.",
@@ -218,6 +268,11 @@ const playersInfo = [
     playerName: "Kenin S.",
     playerFlagId: 200,
     playerCountryCode: "USA",
+  },
+  {
+    playerName: "Lys E.",
+    playerFlagId: 81,
+    playerCountryCode: "GER",
   },
   {
     playerName: "Garcia C.",
@@ -325,9 +380,9 @@ const playersInfo = [
     playerCountryCode: "ESP",
   },
   {
-    playerName: "Dodin O.",
-    playerFlagId: 77,
-    playerCountryCode: "FRA",
+    playerName: "Baptiste H.",
+    playerFlagId: 200,
+    playerCountryCode: "USA",
   },
   {
     playerName: "Day K.",
@@ -373,6 +428,11 @@ const playersInfo = [
     playerName: "Bogdan A.",
     playerFlagId: 157,
     playerCountryCode: "ROU",
+  },
+  {
+    playerName: "Udvardy P.",
+    playerFlagId: 91,
+    playerCountryCode: "HUN",
   },
   {
     playerName: "Pavlyuchenkova A.",
@@ -440,6 +500,11 @@ const playersInfo = [
     playerCountryCode: "JPN",
   },
   {
+    playerName: "Riera J.",
+    playerFlagId: 22,
+    playerCountryCode: "ARG",
+  },
+  {
     playerName: "Begu I.",
     playerFlagId: 157,
     playerCountryCode: "ROU",
@@ -473,6 +538,11 @@ const playersInfo = [
     playerName: "Bektas E.",
     playerFlagId: 200,
     playerCountryCode: "USA",
+  },
+  {
+    playerName: "Ciric Bagaric L.",
+    playerFlagId: 59,
+    playerCountryCode: "CRO",
   },
   {
     playerName: "Stearns P.",
@@ -510,9 +580,19 @@ const playersInfo = [
     playerCountryCode: "EGY",
   },
   {
+    playerName: "Errani S.",
+    playerFlagId: 98,
+    playerCountryCode: "ITA",
+  },
+  {
     playerName: "Schmiedlova A. K.",
     playerFlagId: 171,
     playerCountryCode: "SVK",
+  },
+  {
+    playerName: "Sonmez Z.",
+    playerFlagId: 191,
+    playerCountryCode: "TUR",
   },
   {
     playerName: "Navarro E.",
@@ -538,6 +618,16 @@ const playersInfo = [
     playerName: "Stephens S.",
     playerFlagId: 200,
     playerCountryCode: "USA",
+  },
+  {
+    playerName: "Burillo Escorihuela I.",
+    playerFlagId: 176,
+    playerCountryCode: "ESP",
+  },
+  {
+    playerName: "Uchijima M.",
+    playerFlagId: 100,
+    playerCountryCode: "JPN",
   },
   {
     playerName: "Andreeva E.",
