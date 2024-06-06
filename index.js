@@ -37,6 +37,9 @@ const createIndex = async (req, res) => {
   let countryCodeParam = req.query.countryCode;
   let tournamentName = req.query.tournamentName;
 
+  const beamanalytics = req.query.beamanalytics;
+  const beamanalyticsEnabled = beamanalytics === "false" ? false : true;
+
   if (process.argv[2] === "test") baseUrl = "http://localhost:3000/tennis";
   if (
     scoreboard === undefined ||
@@ -133,7 +136,15 @@ const createIndex = async (req, res) => {
       scoreboardNameNew,
       flags.flagsLinks
     );
-    const index = await getIndex(backgroundImg, playerStillIn, playersSection);
+    const index = await getIndex(
+      backgroundImg,
+      playerStillIn,
+      playersSection,
+      beamanalyticsEnabled,
+      scoreboard,
+      countryCodeParam,
+      tournamentName
+    );
 
     res.send(index);
 
