@@ -18,20 +18,14 @@ const writeFiles = async (
       console.log(`Reading ./resources/${scoreboard}-${tournamentName}.js...`);
 
       try {
-        if (process.argv[2] === "create" && process.argv[3] === "new") {
-          if (tournamentName === defaultTournamentName) {
-            await writePlayersInFile(fsTab, scoreboard, tournamentName);
+        if (tournamentName === defaultTournamentName) {
+          await writePlayersInFile(fsTab, scoreboard, tournamentName);
 
-            console.log(
-              `Done ✅ ./resources/${scoreboard}-${tournamentName}.js`
-            );
-          } else {
-            console.log(
-              `Skipped ✅ ./resources/${scoreboard}-${tournamentName}.js`
-            );
-          }
+          console.log(`Done ✅ ./resources/${scoreboard}-${tournamentName}.js`);
         } else {
-          require(`./resources/${scoreboard}-${tournamentName}.js`);
+          console.log(
+            `Skipped ✅ ./resources/${scoreboard}-${tournamentName}.js`
+          );
         }
       } catch (error) {
         await writePlayersInFile(fsTab, scoreboard, tournamentName);

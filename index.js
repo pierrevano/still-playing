@@ -68,7 +68,7 @@ const createIndex = async (req, res) => {
   const backgroundImg =
     config.wording.tournamentName[tournamentName].backgroundImg;
 
-  if (process.argv[2] === "create") {
+  if (process.argv[2] === "new") {
     writeFiles(
       config.fsTab,
       config.tournamentNameAvailable,
