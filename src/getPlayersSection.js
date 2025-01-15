@@ -17,17 +17,17 @@ const getPlayersSection = async (
   scoreboardNew,
   playerGenderNew,
   scoreboardNameNew,
-  flagsLinks
+  flagsLinks,
 ) => {
   if (!uniqueCountryCodes.includes(countryCodeParam)) {
     playersSection = `<h1>Il n\'y a pas de ${playerGender} à ${tournamentNameFormatted} pour ce pays !</h1>`;
   } else if (tournamentWinnerName !== undefined) {
     playersSection = `
         <h1>Ce tournoi est terminé ! ${winningSubject} de la dernière édition ${winningVerb} ${
-      tournamentWinnerName.includes("/")
-        ? tournamentWinnerName.replace("/", " et ")
-        : tournamentWinnerName
-    }</h1>
+          tournamentWinnerName.includes("/")
+            ? tournamentWinnerName.replace("/", " et ")
+            : tournamentWinnerName
+        }</h1>
         <h3><em>Source : <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
   } else {
     playersSection = `

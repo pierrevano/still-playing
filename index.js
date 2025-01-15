@@ -23,8 +23,6 @@ const createIndex = async (req, res) => {
 
   const uri = `mongodb+srv://${config.mongoDbCredentials}@cluster0.sn2spay.mongodb.net/?retryWrites=true&w=majority`;
   const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     serverApi: ServerApiVersion.v1,
   });
 
@@ -73,31 +71,31 @@ const createIndex = async (req, res) => {
       config.fsTab,
       config.tournamentNameAvailable,
       config.defaultTournamentName,
-      config.scoreboardAvailable
+      config.scoreboardAvailable,
     );
   } else {
     const allInfos = await getAllInfos(
       scoreboard,
       tournamentName,
-      countryCodeParam
+      countryCodeParam,
     );
     const uniqueCountryCodes = allInfos.allCountryCodes.filter(
       (countryCode, countryCodeIndex, allCountryCodes) =>
-        allCountryCodes.indexOf(countryCode) === countryCodeIndex
+        allCountryCodes.indexOf(countryCode) === countryCodeIndex,
     );
     const uniqueFlagIds = allInfos.allFlagIds.filter(
       (flagId, flagIdIndex, allFlagIds) =>
-        allFlagIds.indexOf(flagId) === flagIdIndex
+        allFlagIds.indexOf(flagId) === flagIdIndex,
     );
     const $ = await getBody(
       config.fsTab,
       scoreboard,
       tournamentName,
-      collectionData
+      collectionData,
     );
     const playerStillIn = await getPlayerStillIn(
       $,
-      allInfos.allPlayersNamesForCountry
+      allInfos.allPlayersNamesForCountry,
     );
     const stillOnNameText = await getStillOnNameText(playerStillIn);
     const flags = await getFlagsLinks(
@@ -106,13 +104,13 @@ const createIndex = async (req, res) => {
       countryCodeParam,
       baseUrl,
       scoreboard,
-      tournamentName
+      tournamentName,
     );
     const otherTournaments = await getOtherTournaments(
       tournamentNameKeys,
       tournamentName,
       config.wording,
-      baseUrl
+      baseUrl,
     );
     const tournamentWinnerName = await getTournamentWinnerName($);
     const playersSection = await getPlayersSection(
@@ -134,7 +132,7 @@ const createIndex = async (req, res) => {
       scoreboardNew,
       playerGenderNew,
       scoreboardNameNew,
-      flags.flagsLinks
+      flags.flagsLinks,
     );
     const index = await getIndex(
       backgroundImg,
@@ -143,7 +141,7 @@ const createIndex = async (req, res) => {
       beamanalyticsEnabled,
       scoreboard,
       countryCodeParam,
-      tournamentName
+      tournamentName,
     );
 
     res.send(index);

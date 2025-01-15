@@ -4,7 +4,7 @@ const getFlagsLinks = async (
   countryCodeParam,
   baseUrl,
   scoreboard,
-  tournamentName
+  tournamentName,
 ) => {
   let flagsLinks = "";
   let flagsLinksTitle = "";

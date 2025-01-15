@@ -1,5 +1,7 @@
 const getAllInfos = async (scoreboard, tournamentName, countryCodeParam) => {
-  const playersInfoFile = require(`../resources/${scoreboard}-${tournamentName}.js`);
+  const playersInfoFile = require(
+    `../resources/${scoreboard}-${tournamentName}.js`,
+  );
   let allCountryCodes = [];
   let allFlagIds = [];
   let allPlayersNamesForCountry = [];
@@ -14,7 +16,7 @@ const getAllInfos = async (scoreboard, tournamentName, countryCodeParam) => {
       if (countryCodeParam === playerCountryCode) {
         console.log(playersInfoFile.playersInfo[index]);
         allPlayersNamesForCountry.push(
-          playersInfoFile.playersInfo[index].playerName
+          playersInfoFile.playersInfo[index].playerName,
         );
       }
     }

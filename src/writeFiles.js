@@ -4,7 +4,7 @@ const writeFiles = async (
   fsTab,
   tournamentNameAvailable,
   defaultTournamentName,
-  scoreboardAvailable
+  scoreboardAvailable,
 ) => {
   const t0 = performance.now();
 
@@ -24,7 +24,7 @@ const writeFiles = async (
           console.log(`Done ✅ ./resources/${scoreboard}-${tournamentName}.js`);
         } else {
           console.log(
-            `Skipped ✅ ./resources/${scoreboard}-${tournamentName}.js`
+            `Skipped ✅ ./resources/${scoreboard}-${tournamentName}.js`,
           );
         }
       } catch (error) {

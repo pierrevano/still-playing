@@ -5,7 +5,7 @@ const getIndex = async (
   beamanalyticsEnabled,
   scoreboard,
   countryCodeParam,
-  tournamentName
+  tournamentName,
 ) => {
   const beamanalytics = beamanalyticsEnabled
     ? `

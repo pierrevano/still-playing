@@ -2,7 +2,7 @@ const getOtherTournaments = async (
   tournamentNameKeys,
   tournamentName,
   wording,
-  baseUrl
+  baseUrl,
 ) => {
   let otherTournaments = "";
 

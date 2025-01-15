@@ -9,7 +9,7 @@ const writePlayersInFile = async (fsTab, scoreboard, tournamentName) => {
   for (let index = 0; index < 5; index++) {
     fs.writeFileSync(
       `./resources/${scoreboard}-${tournamentName}.js`,
-      "const playersInfo = ["
+      "const playersInfo = [",
     );
 
     const $ = await getBody(fsTab, scoreboard, tournamentName);
@@ -22,19 +22,19 @@ const writePlayersInFile = async (fsTab, scoreboard, tournamentName) => {
       fs.appendFileSync(
         `./resources/${scoreboard}-${tournamentName}.js`,
         JSON.stringify(playerInfo, null, 2),
-        "utf-8"
+        "utf-8",
       );
 
       if (index < playersNamesAtFirst.length - 1)
         fs.appendFileSync(
           `./resources/${scoreboard}-${tournamentName}.js`,
-          ","
+          ",",
         );
     }
 
     fs.appendFileSync(
       `./resources/${scoreboard}-${tournamentName}.js`,
-      "]; module.exports = {playersInfo};"
+      "]; module.exports = {playersInfo};",
     );
 
     if (playersNamesAtFirst.length > 0) break;

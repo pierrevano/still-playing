@@ -12,7 +12,7 @@ const getDrawIndex = async ($) => {
 
     for (let index = 0; index < drawsNumbers; index++) {
       const playersAdvancedNumber = $(".draw__round:eq(" + index + ")").find(
-        ".bracket__name--advancing"
+        ".bracket__name--advancing",
       ).length;
       drawIndex = index;
       if (playersAdvancedNumber === drawsFirstValue) {

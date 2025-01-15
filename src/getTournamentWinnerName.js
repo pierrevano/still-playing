@@ -5,7 +5,7 @@ const getTournamentWinnerName = async ($) => {
     const drawIndex = await getDrawIndex($);
     const drawsNumbers = $(".draw__label").length;
     const playerSpan = $(".draw__round:eq(" + drawIndex + ")").find(
-      ".bracket__name--advancing"
+      ".bracket__name--advancing",
     );
 
     if (drawIndex + 1 === drawsNumbers && playerSpan.length > 0) {

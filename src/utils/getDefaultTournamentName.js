@@ -53,19 +53,21 @@ const tournaments = [
 
 function getDefaultTournamentName() {
   const currentDate = new Date();
-  const threeWeeksInMilliseconds = 2 * 7 * 24 * 60 * 60 * 1000;
+  const threeWeeksInMilliseconds = 3 * 7 * 24 * 60 * 60 * 1000; // Three weeks in milliseconds
 
   for (const tournament of tournaments) {
+    const startDate = tournament.startDate.getTime();
+
+    // Check if the current date is within 3 weeks before or 3 weeks after the tournament start date
     if (
-      currentDate >= tournament.startDate &&
-      currentDate <=
-        new Date(tournament.startDate.getTime() + threeWeeksInMilliseconds)
+      currentDate.getTime() >= startDate - threeWeeksInMilliseconds &&
+      currentDate.getTime() <= startDate + threeWeeksInMilliseconds
     ) {
       return tournament.name;
     }
   }
 
-  return "internationaux-de-france"; /* return `internationaux-de-france` as a default tournament name */
+  return "internationaux-de-france"; // Return default tournament name if no match
 }
 
 module.exports = getDefaultTournamentName;

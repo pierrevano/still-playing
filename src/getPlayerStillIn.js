@@ -33,12 +33,11 @@ const getPlayerStillIn = async ($, allPlayersNamesForCountry) => {
           });
         }
       });
-    allPlayersNamesStillIn = allPlayersNamesStillIn.filter(function (
-      _value,
-      index
-    ) {
-      return indexToRemove.indexOf(index) === -1;
-    });
+    allPlayersNamesStillIn = allPlayersNamesStillIn.filter(
+      function (_value, index) {
+        return indexToRemove.indexOf(index) === -1;
+      },
+    );
 
     for (let index = 0; index < allPlayersNamesStillIn.length; index++) {
       const playerNameStillIn = allPlayersNamesStillIn[index].name;

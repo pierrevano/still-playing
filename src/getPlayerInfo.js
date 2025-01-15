@@ -4,14 +4,14 @@ const getPlayerInfo = async (playerNameAtFirst) => {
   let playerInfo;
   const flagsIdsFile = require("../resources/_flags_ids.js");
   const playerName = encodeURI(
-    playerNameAtFirst.playerName.replace(/[\'-\.]/g, " ")
+    playerNameAtFirst.playerName.replace(/[\'-\.]/g, " "),
   );
 
   const response = await got(
-    `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`
+    `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`,
   );
   const parsedResponse = JSON.parse(
-    response.body.replace("cjs.search.jsonpCallback(", "").replace(");", "")
+    response.body.replace("cjs.search.jsonpCallback(", "").replace(");", ""),
   );
   const parsedResponseRes = parsedResponse.results;
   const filteredParsedResponse = parsedResponseRes.filter(function (item) {
@@ -28,7 +28,7 @@ const getPlayerInfo = async (playerNameAtFirst) => {
       ) {
         return item;
       }
-    }
+    },
   );
 
   if (filteredParsedResponseWithName.length > 0) {
@@ -45,7 +45,7 @@ const getPlayerInfo = async (playerNameAtFirst) => {
       ) {
         console.log(`playerName: ${playerName}`);
         console.log(
-          `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`
+          `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`,
         );
         console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
         process.exit(1);
@@ -53,7 +53,7 @@ const getPlayerInfo = async (playerNameAtFirst) => {
     } catch (error) {
       console.log(`playerName: ${playerName}`);
       console.log(
-        `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`
+        `https://s.livesport.services/search/?q=${playerName}&l=16&s=2&f=1%3B1&pid=16&sid=1`,
       );
       console.log(`flagId: ${filteredParsedResponseWithName[0].flag_id}`);
       console.log(`getPlayerInfo: ${error}`);
