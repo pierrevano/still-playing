@@ -1,6 +1,6 @@
 {
   "name": "still_playing",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Still playing?",
   "main": "index.js",
   "scripts": {
