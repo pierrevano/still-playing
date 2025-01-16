@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 
 const { config } = require("./resources/_configuration.js");
+const { detectBrowserLanguage } = require("./src/utils/languageUtils.js");
 const getAllInfos = require("./src/getAllInfos.js");
 const getBody = require("./src/getBody.js");
 const getFlagsLinks = require("./src/getFlagsLinks.js");
@@ -29,7 +30,11 @@ const createIndex = async (req, res) => {
   const database = client.db(config.dbName);
   const collectionData = database.collection(config.collectionName);
 
-  const tournamentNameKeys = Object.keys(config.wording.tournamentName);
+  const lang = detectBrowserLanguage(req);
+  const wordingLang = config.wording[lang];
+  console.log("Language detected:", lang);
+
+  const tournamentNameKeys = Object.keys(wordingLang.tournamentName);
   let baseUrl = `https://${config.hostname}/tennis`;
   let scoreboard = req.query.scoreboard;
   let countryCodeParam = req.query.countryCode;
@@ -54,17 +59,17 @@ const createIndex = async (req, res) => {
   countryCodeParam = countryCodeParam.toUpperCase();
   console.log(`tournamentName: ${tournamentName}`);
 
-  const playerGender = config.wording.scoreboard[scoreboard][0];
-  const pronoun = config.wording.scoreboard[scoreboard][1];
-  const scoreboardNew = config.wording.scoreboard[scoreboard][2];
-  const playerGenderNew = config.wording.scoreboard[scoreboard][3];
-  const scoreboardNameNew = config.wording.scoreboard[scoreboard][4];
-  const winningSubject = config.wording.scoreboard[scoreboard][5];
-  const winningVerb = config.wording.scoreboard[scoreboard][6];
+  const playerGender = wordingLang.scoreboard[scoreboard][0];
+  const pronoun = wordingLang.scoreboard[scoreboard][1];
+  const scoreboardNew = wordingLang.scoreboard[scoreboard][2];
+  const playerGenderNew = wordingLang.scoreboard[scoreboard][3];
+  const scoreboardNameNew = wordingLang.scoreboard[scoreboard][4];
+  const winningSubject = wordingLang.scoreboard[scoreboard][5];
+  const winningVerb = wordingLang.scoreboard[scoreboard][6];
   const tournamentNameFormatted =
-    config.wording.tournamentName[tournamentName].name;
+    wordingLang.tournamentName[tournamentName].name;
   const backgroundImg =
-    config.wording.tournamentName[tournamentName].backgroundImg;
+    wordingLang.tournamentName[tournamentName].backgroundImg;
 
   if (process.argv[2] === "new") {
     writeFiles(
@@ -97,7 +102,10 @@ const createIndex = async (req, res) => {
       $,
       allInfos.allPlayersNamesForCountry,
     );
-    const stillOnNameText = await getStillOnNameText(playerStillIn);
+    const stillOnNameText = await getStillOnNameText(
+      playerStillIn,
+      wordingLang,
+    );
     const flags = await getFlagsLinks(
       uniqueCountryCodes,
       uniqueFlagIds,
@@ -109,7 +117,7 @@ const createIndex = async (req, res) => {
     const otherTournaments = await getOtherTournaments(
       tournamentNameKeys,
       tournamentName,
-      config.wording,
+      wordingLang,
       baseUrl,
     );
     const tournamentWinnerName = await getTournamentWinnerName($);
@@ -133,6 +141,7 @@ const createIndex = async (req, res) => {
       playerGenderNew,
       scoreboardNameNew,
       flags.flagsLinks,
+      wordingLang,
     );
     const index = await getIndex(
       backgroundImg,

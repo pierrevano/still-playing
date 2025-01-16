@@ -1,16 +1,12 @@
-const getStillOnNameText = async (playerStillIn) => {
-  let stillOnNameText = "PLUS PERSONNE, RIEN, NADA, QUE TCHI !";
-
-  if (playerStillIn.length > 0) {
-    stillOnNameText = "";
-    for (let index = 0; index < playerStillIn.length; index++) {
-      const playerName = playerStillIn[index].name.slice(0, -1);
-      stillOnNameText += `<span>${playerName}</span>, `;
-    }
-    stillOnNameText = stillOnNameText
-      .replace(/,\s*$/, "")
-      .replace(/,(?=[^,]*$)/, " et");
+const getStillOnNameText = async (playerStillIn, wordingLang) => {
+  if (playerStillIn.length === 0) {
+    return wordingLang.stillOnNameText;
   }
+
+  const stillOnNameText = playerStillIn
+    .map((player) => `<span>${player.name.slice(0, -1)}</span>`)
+    .join(", ")
+    .replace(/,(?=[^,]*$)/, ` ${wordingLang.common.and}`);
 
   return stillOnNameText;
 };

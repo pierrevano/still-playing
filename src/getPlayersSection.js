@@ -18,31 +18,32 @@ const getPlayersSection = async (
   playerGenderNew,
   scoreboardNameNew,
   flagsLinks,
+  wordingLang,
 ) => {
   if (!uniqueCountryCodes.includes(countryCodeParam)) {
-    playersSection = `<h1>Il n\'y a pas de ${playerGender} à ${tournamentNameFormatted} pour ce pays !</h1>`;
+    playersSection = `<h1>${wordingLang.common.noMore} ${playerGender} ${wordingLang.common.at} ${tournamentNameFormatted} ${wordingLang.common.thisCountry}!</h1>`;
   } else if (tournamentWinnerName !== undefined) {
     playersSection = `
-        <h1>Ce tournoi est terminé ! ${winningSubject} de la dernière édition ${winningVerb} ${
+        <h1>${wordingLang.common.tournamentEnded}! ${winningSubject} ${wordingLang.common.winnerOfLastEdition} ${winningVerb} ${
           tournamentWinnerName.includes("/")
-            ? tournamentWinnerName.replace("/", " et ")
+            ? tournamentWinnerName.replace("/", ` ${wordingLang.common.and} `)
             : tournamentWinnerName
         }</h1>
-        <h3><em>Source : <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
+        <h3><em>${wordingLang.common.source}: <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
   } else {
     playersSection = `
-        <h1>${flagsLinksTitle}${pronoun} sont encore <span id="odometer" class="odometer">${playersNumberAtFirst}</span> !</h1>
-        <h2>${stillOnNameText}</h2>
-        <h3><em>Source : <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
+        <h1>${flagsLinksTitle}${pronoun} ${wordingLang.common.areStill} <span id="odometer" class="odometer">${playersNumberAtFirst}</span>!</h1>
+        <h2>${stillOnNameText}!</h2>
+        <h3><em>${wordingLang.common.source}: <a href="https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/" target="_blank">https://www.flashscore.fr/tennis/${scoreboard}/${tournamentName}/tableau/</a></em></h3>`;
   }
 
   playersSection += `
-    <h4>Résultats des autres compétitions : ${otherTournaments}</h4>
-    <h4><a href="${baseUrl}?scoreboard=${scoreboardNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Et les ${playerGenderNew} ?</a></h4>
-    <h4><a href="${baseUrl}?scoreboard=atp-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Ou les hommes en ${scoreboardNameNew} ?</a><br><a href="${baseUrl}?scoreboard=wta-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">Ou les femmes ?</a></h4>`;
+    <h4>${wordingLang.common.resultsOfOtherCompetitions}: ${otherTournaments}</h4>
+    <h4><a href="${baseUrl}?scoreboard=${scoreboardNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">${wordingLang.common.whatAbout} ${playerGenderNew}?</a></h4>
+    <h4><a href="${baseUrl}?scoreboard=atp-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">${wordingLang.common.orMenIn} ${scoreboardNameNew}?</a><br><a href="${baseUrl}?scoreboard=wta-${scoreboardNameNew}&countryCode=${countryCodeParam}&tournamentName=${tournamentName}">${wordingLang.common.orWomenIn}?</a></h4>`;
   if (tournamentWinnerName === undefined) {
     playersSection += `
-        <h4>Et les autres pays ?</h4>
+        <h4>${wordingLang.common.otherCountries}?</h4>
         <h4 id="flagsLinks">${flagsLinks}</h4>`;
   }
 

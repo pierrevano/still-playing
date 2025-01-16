@@ -17,7 +17,7 @@ const getIndex = async (
   /* beautify ignore:start */
   const index = `
     <!doctype html>
-    <html lang="fr">
+    <html>
         <head>
             <meta charset="utf-8">
             <title>Still playing?</title>
@@ -27,7 +27,7 @@ const getIndex = async (
                 body {text-align: center; margin: 0; font-family: "Francois One"; background-color: #000; color: #FFF; background-image: url("${backgroundImg}"); background-size: cover}
                 a, a:visited, a:hover, a:active {color:#FFF}
                 h1 {font-size: 1.9em}
-                h2 {max-width: 700px}
+                h2 {max-width: 90%}
                 h4 {margin-bottom: 0}
                 #flagsLinks {max-width: 420px}
                 .players {padding: 20px; min-height: 100vh; align-items: center; justify-content: center; display: flex; flex-flow: column; background: rgba(0, 0, 0, 0.2); position: relative}
