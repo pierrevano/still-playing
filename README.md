@@ -22,30 +22,34 @@ _Mobile FRA preview_
 
 # Changelog
 
-## **2.0.2** - 7/28/2021
+## **2.1.0** - 2025/1/16
 
-- add olympics tournament
+- Add translations (en, fr)
 
-## **2.0.1** - 7/13/2021
+## **2.0.2** - 2021/7/28
 
-- add tournaments winners
+- Add olympics tournament
 
-## **2.0** - 7/7/2021
+## **2.0.1** - 2021/7/13
 
-- change website to FlashScore to add all major tournaments
+- Add tournaments winners
 
-## **1.1.1** - 6/7/2021
+## **2.0** - 2021/7/7
 
-- add doubles players
+- Change website to FlashScore to add all major tournaments
 
-## **1.1** - 6/4/2021
+## **1.1.1** - 2021/6/7
 
-- add all countries
+- Add doubles players
 
-## **1.0.1** - 6/3/2021
+## **1.1** - 2021/6/4
 
-- add women french players
+- Add all countries
 
-## **1.0** - 6/2/2021
+## **1.0.1** - 2021/6/3
 
-- return only men french players
+- Add women french players
+
+## **1.0** - 2021/6/2
+
+- Return only men french players
