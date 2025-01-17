@@ -25,6 +25,7 @@ const getIndex = async (
             <link href="https://fonts.cdnfonts.com/css/francois-one" rel="stylesheet">
             <style>
                 body {text-align: center; margin: 0; font-family: "Francois One"; background-color: #000; color: #FFF; background-image: url("${backgroundImg}"); background-size: cover}
+                body::before {content: "";position: absolute;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5)}
                 a, a:visited, a:hover, a:active {color:#FFF}
                 h1 {font-size: 1.9em}
                 h2 {max-width: 90%}

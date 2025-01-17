@@ -31,7 +31,8 @@ const getBody = async (fsTab, scoreboard, tournamentName, collectionData) => {
       cachedPage &&
       cachedPage.content &&
       cacheAge < config.cacheExpiryDuration &&
-      (process.argv[2] !== "force" || process.argv[3] !== "force")
+      process.argv[2] !== "force" &&
+      process.argv[3] !== "force"
     ) {
       console.log("Returning cached content");
       content = cachedPage.content;

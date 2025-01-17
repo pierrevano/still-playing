@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 
 const { config } = require("./resources/_configuration.js");
-const { detectBrowserLanguage } = require("./src/utils/languageUtils.js");
+const { detectLanguage } = require("./src/utils/detectLanguage.js");
 const getAllInfos = require("./src/getAllInfos.js");
 const getBody = require("./src/getBody.js");
 const getFlagsLinks = require("./src/getFlagsLinks.js");
@@ -30,7 +30,7 @@ const createIndex = async (req, res) => {
   const database = client.db(config.dbName);
   const collectionData = database.collection(config.collectionName);
 
-  const lang = detectBrowserLanguage(req);
+  const lang = detectLanguage(req);
   const wordingLang = config.wording[lang];
   console.log("Language detected:", lang);
 

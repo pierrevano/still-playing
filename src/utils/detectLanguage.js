@@ -1,4 +1,4 @@
-const detectBrowserLanguage = (req) => {
+const detectLanguage = (req) => {
   // Check if the 'lang' query parameter is present and valid
   if (req && req.query && req.query.lang) {
     const lang = req.query.lang.toLowerCase();
@@ -16,4 +16,4 @@ const detectBrowserLanguage = (req) => {
   return "en";
 };
 
-module.exports = { detectBrowserLanguage };
+module.exports = { detectLanguage };
